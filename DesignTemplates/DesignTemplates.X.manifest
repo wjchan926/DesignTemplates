@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+  <assemblyIdentity name="DesignTemplates" version="1.0.0.0"></assemblyIdentity>
+
+  <clrClass clsid="{6e3e7db7-6b73-4695-9fe8-86d035e9b969}" progid="DesignTemplates.StandardAddInServer" threadingModel="Both" name="DesignTemplates.StandardAddInServer" runtimeVersion=""></clrClass>
+
+  <file name="DesignTemplates.dll" hashalg="SHA1"></file>
+
+</assembly>
