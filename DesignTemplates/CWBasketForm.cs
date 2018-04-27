@@ -15,10 +15,11 @@ namespace InvAddIn
     public partial class CWBasketForm : Form
     {
         Inventor.Application invApp;
-        BasketParameters basketParameters = new BasketParameters();
-
-        private string cwBasketTemplatePath = @"C:\_Vault\Standards\Inventor\Templates\Crosswire Basket\";
+        BasketSpecs basketSpecs;        
         private string generatePath;
+        private RadioButton materialRbChecked = null;
+        private RadioButton finishRbChecked = null;
+        private string cwBasketTemplatePath = @"C:\_Vault\Standards\Inventor\Templates\Crosswire Basket\";
 
         /// <summary>
         /// For testing only.  Class will always need the Invnentor Application object passed to it
@@ -44,24 +45,10 @@ namespace InvAddIn
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CWBasketForm_Load(object sender, EventArgs e)
-        {
-
-            // Gets assembly version of the addin and Puts in title
-            this.Text = getVersion();
-
-            // Always put tool on top
-      //      TopMost = true;
-
-            // Set Default Values for text blocks
-            lengthTb.Text = "15";
-            widthTb.Text = "10";
-            heightTb.Text = "5";
-            frameDiaTb.Text = "0.25";
-            cwDiaTb.Text = "0.1205";
-            midFrameDiaTb.Text = "0.1205";
-            lengthCWSpcTb.Text = "1.5";
-            widthCWSpcTb.Text = "1.5";
-            midFrameSpcTb.Text = "2.5";
+        {            
+            this.Text = getVersion(); // Gets assembly version of the addin and Puts in title            
+            TopMost = true; // Always put tool on top          
+            resetDefault();   // Set Default Values for text blocks
         }
 
         /// <summary>
@@ -139,10 +126,23 @@ namespace InvAddIn
             // Check if any of the fields are emtpy.       
             if (allFieldsNonEmpty())
             {
-                copyAssemblyParts(generatePath);
+                basketSpecs.copyTemplateFiles(cwBasketTemplatePath);   // Copy files
+                basketSpecs.updateAssemblyParams();    // Updated parameters in assembly
+                basketSpecs.updateIlogic();    // update ilogic
+                // Update Material
+                // Update Finish
+
+                // Close form
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+                this.Dispose();
             }            
         }
         
+        /// <summary>
+        /// Checks if all the fields in the form are nonempty
+        /// </summary>
+        /// <returns></returns>
         private bool allFieldsNonEmpty()
         {
             // Check if any of the fields are emtpy.       
@@ -177,30 +177,26 @@ namespace InvAddIn
         }        
 
         /// <summary>
-        /// Copies Template files to specified filepath
+        /// Maps parameters to the basketSpecs object
         /// </summary>
-        private void copyAssemblyParts(string filepath)
-        {        
-            Directory.CreateDirectory(filepath);
-
-            File.Copy(cwBasketTemplatePath, filepath);
-            File.Move(filepath + "\\" + "Crosswire Basket.iam", filepath + "\\" + partNumberTb.Text + ".iam");
-
-            // Make all files read-write
-            foreach (string file in Directory.GetFiles(filepath))
-            {
-                FileInfo fileInfo = new FileInfo(file);
-                fileInfo.IsReadOnly = false;                
-            }
-        }
-
-        /// <summary>
-        /// Updates the paramters in the assembly.
-        /// May need to tie in PushParams and Update iLogic Addins
-        /// </summary>
-        private void updateParams()
+        private void mapParameters()
         {
-            
+            basketSpecs = new BasketSpecs();
+
+            basketSpecs.invApp = invApp;
+            basketSpecs.partNumber = Int64.Parse(partNumberTb.Text);
+            basketSpecs.location = generatePath;
+            basketSpecs.length = Double.Parse(lengthTb.Text);
+            basketSpecs.width = Double.Parse(widthTb.Text);
+            basketSpecs.height = Double.Parse(heightTb.Text);
+            basketSpecs.frameDia = Double.Parse(frameDiaTb.Text);
+            basketSpecs.cwDia = Double.Parse(cwDiaTb.Text);
+            basketSpecs.cwSpcX = Double.Parse(lengthCWSpcTb.Text);
+            basketSpecs.cwSpcZ = Double.Parse(widthCWSpcTb.Text);
+            basketSpecs.midFrameDia = Double.Parse(midFrameDiaTb.Text);
+            basketSpecs.midFrameNum = Double.Parse(midFrameNumTb.Text);
+            basketSpecs.material = materialRbChecked.Tag.ToString();
+            basketSpecs.finish = finishRbChecked.Text.ToUpper();
         }
 
         /// <summary>
@@ -210,6 +206,11 @@ namespace InvAddIn
         /// <param name="e"></param>
         private void resetBtn_Click(object sender, EventArgs e)
         {
+            resetDefault();
+        }
+
+        private void resetDefault()
+        {
             lengthTb.Text = "15";
             widthTb.Text = "10";
             heightTb.Text = "5";
@@ -218,7 +219,57 @@ namespace InvAddIn
             midFrameDiaTb.Text = "0.1205";
             lengthCWSpcTb.Text = "1.5";
             widthCWSpcTb.Text = "1.5";
-            midFrameSpcTb.Text = "2.5";
+            midFrameNumTb.Text = "2";
+            midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text)) / (Double.Parse(midFrameNumTb.Text) + 1));
+            ss304Rb.Checked = true;
+            naturalRb.Checked = true;
+            otherFinishTb.Text = "Generic";
+        }
+
+        private void ss304Rb_CheckedChanged(object sender, EventArgs e)
+        {
+            materialRbChecked = sender as RadioButton;
+        }
+
+        private void ss316Rb_CheckedChanged(object sender, EventArgs e)
+        {
+            materialRbChecked = sender as RadioButton;
+        }
+
+        private void psRb_CheckedChanged(object sender, EventArgs e)
+        {
+            materialRbChecked = sender as RadioButton;
+        }
+
+        private void gsRb_CheckedChanged(object sender, EventArgs e)
+        {
+            materialRbChecked = sender as RadioButton;
+        }
+
+        private void otherMatRb_CheckedChanged(object sender, EventArgs e)
+        {
+            materialRbChecked = sender as RadioButton;
+        }
+
+        private void naturalRb_CheckedChanged(object sender, EventArgs e)
+        {
+            finishRbChecked = sender as RadioButton;
+        }
+
+        private void electroRb_CheckedChanged(object sender, EventArgs e)
+        {
+            finishRbChecked = sender as RadioButton;
+        }
+
+        private void powderRb_CheckedChanged(object sender, EventArgs e)
+        {
+            finishRbChecked = sender as RadioButton;
+        }
+
+        private void otherFinishRb_CheckedChanged(object sender, EventArgs e)
+        {
+            finishRbChecked = sender as RadioButton;
+            otherFinishTb.Enabled = otherFinishRb.Checked;
         }
     }
 }

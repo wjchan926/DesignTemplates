@@ -77,6 +77,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssemblyToParts">
+      <HintPath>..\..\AssemblyToParts\AssemblyToParts\bin\Release\AssemblyToParts.dll</HintPath>
+    </Reference>
     <Reference Include="autodesk.inventor.interop, Version=21.0.0.0, Culture=neutral, PublicKeyToken=d84147f8b4276564, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -97,13 +100,14 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BasketParameters.cs" />
+    <Compile Include="BasketSpecs.cs" />
     <Compile Include="CWBasketForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CWBasketForm.Designer.cs">
       <DependentUpon>CWBasketForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IGenerator.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

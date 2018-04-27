@@ -43,11 +43,27 @@
             this.frameDiaTb = new System.Windows.Forms.TextBox();
             this.midFrameDiaTb = new System.Windows.Forms.TextBox();
             this.dimsGb = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.midFrameNumTb = new System.Windows.Forms.TextBox();
+            this.cwDiaTb = new System.Windows.Forms.TextBox();
             this.midFrameSpcTb = new System.Windows.Forms.TextBox();
             this.widthCWSpcTb = new System.Windows.Forms.TextBox();
             this.lengthCWSpcTb = new System.Windows.Forms.TextBox();
-            this.cwDiaTb = new System.Windows.Forms.TextBox();
+            this.materialGb = new System.Windows.Forms.GroupBox();
+            this.otherMatRb = new System.Windows.Forms.RadioButton();
+            this.gsRb = new System.Windows.Forms.RadioButton();
+            this.psRb = new System.Windows.Forms.RadioButton();
+            this.ss316Rb = new System.Windows.Forms.RadioButton();
+            this.ss304Rb = new System.Windows.Forms.RadioButton();
+            this.finishGb = new System.Windows.Forms.GroupBox();
+            this.otherFinishTb = new System.Windows.Forms.TextBox();
+            this.otherFinishRb = new System.Windows.Forms.RadioButton();
+            this.powderRb = new System.Windows.Forms.RadioButton();
+            this.electroRb = new System.Windows.Forms.RadioButton();
+            this.naturalRb = new System.Windows.Forms.RadioButton();
             this.dimsGb.SuspendLayout();
+            this.materialGb.SuspendLayout();
+            this.finishGb.SuspendLayout();
             this.SuspendLayout();
             // 
             // browseBtn
@@ -62,9 +78,9 @@
             // 
             // generateBtn
             // 
-            this.generateBtn.Location = new System.Drawing.Point(735, 748);
+            this.generateBtn.Location = new System.Drawing.Point(1153, 690);
             this.generateBtn.Name = "generateBtn";
-            this.generateBtn.Size = new System.Drawing.Size(200, 23);
+            this.generateBtn.Size = new System.Drawing.Size(187, 23);
             this.generateBtn.TabIndex = 1;
             this.generateBtn.Text = "Generate";
             this.generateBtn.UseVisualStyleBackColor = true;
@@ -72,9 +88,9 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(941, 748);
+            this.resetBtn.Location = new System.Drawing.Point(1153, 718);
             this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(125, 23);
+            this.resetBtn.Size = new System.Drawing.Size(106, 23);
             this.resetBtn.TabIndex = 2;
             this.resetBtn.Text = "Reset to Defaults";
             this.resetBtn.UseVisualStyleBackColor = true;
@@ -83,7 +99,7 @@
             // cancelBtn
             // 
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBtn.Location = new System.Drawing.Point(1072, 748);
+            this.cancelBtn.Location = new System.Drawing.Point(1265, 718);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 3;
@@ -103,7 +119,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(48, 752);
+            this.label2.Location = new System.Drawing.Point(1153, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 13);
             this.label2.TabIndex = 5;
@@ -111,9 +127,9 @@
             // 
             // partNumberTb
             // 
-            this.partNumberTb.Location = new System.Drawing.Point(154, 749);
+            this.partNumberTb.Location = new System.Drawing.Point(1156, 25);
             this.partNumberTb.Name = "partNumberTb";
-            this.partNumberTb.Size = new System.Drawing.Size(575, 20);
+            this.partNumberTb.Size = new System.Drawing.Size(187, 20);
             this.partNumberTb.TabIndex = 6;
             this.partNumberTb.Tag = "Marlin Part Number";
             // 
@@ -175,6 +191,8 @@
             // 
             this.dimsGb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("dimsGb.BackgroundImage")));
             this.dimsGb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dimsGb.Controls.Add(this.label3);
+            this.dimsGb.Controls.Add(this.midFrameNumTb);
             this.dimsGb.Controls.Add(this.cwDiaTb);
             this.dimsGb.Controls.Add(this.midFrameSpcTb);
             this.dimsGb.Controls.Add(this.widthCWSpcTb);
@@ -189,6 +207,33 @@
             this.dimsGb.Size = new System.Drawing.Size(1135, 704);
             this.dimsGb.TabIndex = 8;
             this.dimsGb.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(965, 557);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "No. of Middle Frame(s):";
+            // 
+            // midFrameNumTb
+            // 
+            this.midFrameNumTb.Location = new System.Drawing.Point(1000, 573);
+            this.midFrameNumTb.Name = "midFrameNumTb";
+            this.midFrameNumTb.Size = new System.Drawing.Size(50, 20);
+            this.midFrameNumTb.TabIndex = 9;
+            this.midFrameNumTb.Tag = "No. MIddle Frame(s)";
+            this.midFrameNumTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // cwDiaTb
+            // 
+            this.cwDiaTb.Location = new System.Drawing.Point(539, 624);
+            this.cwDiaTb.Name = "cwDiaTb";
+            this.cwDiaTb.Size = new System.Drawing.Size(50, 20);
+            this.cwDiaTb.TabIndex = 8;
+            this.cwDiaTb.Tag = "CW Dia.";
+            this.cwDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // midFrameSpcTb
             // 
@@ -218,14 +263,149 @@
             this.lengthCWSpcTb.Tag = "CW Length Spacing";
             this.lengthCWSpcTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // cwDiaTb
+            // materialGb
             // 
-            this.cwDiaTb.Location = new System.Drawing.Point(539, 624);
-            this.cwDiaTb.Name = "cwDiaTb";
-            this.cwDiaTb.Size = new System.Drawing.Size(50, 20);
-            this.cwDiaTb.TabIndex = 8;
-            this.cwDiaTb.Tag = "CW Dia.";
-            this.cwDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.materialGb.Controls.Add(this.otherMatRb);
+            this.materialGb.Controls.Add(this.gsRb);
+            this.materialGb.Controls.Add(this.psRb);
+            this.materialGb.Controls.Add(this.ss316Rb);
+            this.materialGb.Controls.Add(this.ss304Rb);
+            this.materialGb.Location = new System.Drawing.Point(1156, 51);
+            this.materialGb.Name = "materialGb";
+            this.materialGb.Size = new System.Drawing.Size(187, 141);
+            this.materialGb.TabIndex = 9;
+            this.materialGb.TabStop = false;
+            this.materialGb.Text = "Material:";
+            // 
+            // otherMatRb
+            // 
+            this.otherMatRb.AutoSize = true;
+            this.otherMatRb.Location = new System.Drawing.Point(12, 111);
+            this.otherMatRb.Name = "otherMatRb";
+            this.otherMatRb.Size = new System.Drawing.Size(51, 17);
+            this.otherMatRb.TabIndex = 4;
+            this.otherMatRb.Tag = "Generic";
+            this.otherMatRb.Text = "Other";
+            this.otherMatRb.UseVisualStyleBackColor = true;
+            this.otherMatRb.CheckedChanged += new System.EventHandler(this.otherMatRb_CheckedChanged);
+            // 
+            // gsRb
+            // 
+            this.gsRb.AutoSize = true;
+            this.gsRb.Location = new System.Drawing.Point(12, 88);
+            this.gsRb.Name = "gsRb";
+            this.gsRb.Size = new System.Drawing.Size(105, 17);
+            this.gsRb.TabIndex = 3;
+            this.gsRb.Tag = "Galvanized Steel";
+            this.gsRb.Text = "Galvanized Steel";
+            this.gsRb.UseVisualStyleBackColor = true;
+            this.gsRb.CheckedChanged += new System.EventHandler(this.gsRb_CheckedChanged);
+            // 
+            // psRb
+            // 
+            this.psRb.AutoSize = true;
+            this.psRb.Location = new System.Drawing.Point(12, 65);
+            this.psRb.Name = "psRb";
+            this.psRb.Size = new System.Drawing.Size(137, 17);
+            this.psRb.TabIndex = 2;
+            this.psRb.Tag = "1008 / 1010 PLAIN STEEL";
+            this.psRb.Text = "1008 / 1010 Plain Steel";
+            this.psRb.UseVisualStyleBackColor = true;
+            this.psRb.CheckedChanged += new System.EventHandler(this.psRb_CheckedChanged);
+            // 
+            // ss316Rb
+            // 
+            this.ss316Rb.AutoSize = true;
+            this.ss316Rb.Location = new System.Drawing.Point(12, 42);
+            this.ss316Rb.Name = "ss316Rb";
+            this.ss316Rb.Size = new System.Drawing.Size(115, 17);
+            this.ss316Rb.TabIndex = 1;
+            this.ss316Rb.Tag = "316 STAINLESS STEEL";
+            this.ss316Rb.Text = "316 Stainless Steel";
+            this.ss316Rb.UseVisualStyleBackColor = true;
+            this.ss316Rb.CheckedChanged += new System.EventHandler(this.ss316Rb_CheckedChanged);
+            // 
+            // ss304Rb
+            // 
+            this.ss304Rb.AutoSize = true;
+            this.ss304Rb.Location = new System.Drawing.Point(12, 19);
+            this.ss304Rb.Name = "ss304Rb";
+            this.ss304Rb.Size = new System.Drawing.Size(115, 17);
+            this.ss304Rb.TabIndex = 0;
+            this.ss304Rb.Tag = "304 STAINLESS STEEL";
+            this.ss304Rb.Text = "304 Stainless Steel";
+            this.ss304Rb.UseVisualStyleBackColor = true;
+            this.ss304Rb.CheckedChanged += new System.EventHandler(this.ss304Rb_CheckedChanged);
+            // 
+            // finishGb
+            // 
+            this.finishGb.Controls.Add(this.otherFinishTb);
+            this.finishGb.Controls.Add(this.otherFinishRb);
+            this.finishGb.Controls.Add(this.powderRb);
+            this.finishGb.Controls.Add(this.electroRb);
+            this.finishGb.Controls.Add(this.naturalRb);
+            this.finishGb.Location = new System.Drawing.Point(1156, 198);
+            this.finishGb.Name = "finishGb";
+            this.finishGb.Size = new System.Drawing.Size(187, 120);
+            this.finishGb.TabIndex = 10;
+            this.finishGb.TabStop = false;
+            this.finishGb.Text = "Finish:";
+            // 
+            // otherFinishTb
+            // 
+            this.otherFinishTb.Enabled = false;
+            this.otherFinishTb.Location = new System.Drawing.Point(63, 87);
+            this.otherFinishTb.Name = "otherFinishTb";
+            this.otherFinishTb.Size = new System.Drawing.Size(100, 20);
+            this.otherFinishTb.TabIndex = 4;
+            // 
+            // otherFinishRb
+            // 
+            this.otherFinishRb.AutoSize = true;
+            this.otherFinishRb.Location = new System.Drawing.Point(12, 88);
+            this.otherFinishRb.Name = "otherFinishRb";
+            this.otherFinishRb.Size = new System.Drawing.Size(54, 17);
+            this.otherFinishRb.TabIndex = 3;
+            this.otherFinishRb.TabStop = true;
+            this.otherFinishRb.Text = "Other:";
+            this.otherFinishRb.UseVisualStyleBackColor = true;
+            this.otherFinishRb.CheckedChanged += new System.EventHandler(this.otherFinishRb_CheckedChanged);
+            // 
+            // powderRb
+            // 
+            this.powderRb.AutoSize = true;
+            this.powderRb.Location = new System.Drawing.Point(11, 65);
+            this.powderRb.Name = "powderRb";
+            this.powderRb.Size = new System.Drawing.Size(98, 17);
+            this.powderRb.TabIndex = 2;
+            this.powderRb.TabStop = true;
+            this.powderRb.Text = "Powder Coated";
+            this.powderRb.UseVisualStyleBackColor = true;
+            this.powderRb.CheckedChanged += new System.EventHandler(this.powderRb_CheckedChanged);
+            // 
+            // electroRb
+            // 
+            this.electroRb.AutoSize = true;
+            this.electroRb.Location = new System.Drawing.Point(12, 42);
+            this.electroRb.Name = "electroRb";
+            this.electroRb.Size = new System.Drawing.Size(97, 17);
+            this.electroRb.TabIndex = 1;
+            this.electroRb.TabStop = true;
+            this.electroRb.Text = "Electropolished";
+            this.electroRb.UseVisualStyleBackColor = true;
+            this.electroRb.CheckedChanged += new System.EventHandler(this.electroRb_CheckedChanged);
+            // 
+            // naturalRb
+            // 
+            this.naturalRb.AutoSize = true;
+            this.naturalRb.Location = new System.Drawing.Point(12, 19);
+            this.naturalRb.Name = "naturalRb";
+            this.naturalRb.Size = new System.Drawing.Size(59, 17);
+            this.naturalRb.TabIndex = 0;
+            this.naturalRb.TabStop = true;
+            this.naturalRb.Text = "Natural";
+            this.naturalRb.UseVisualStyleBackColor = true;
+            this.naturalRb.CheckedChanged += new System.EventHandler(this.naturalRb_CheckedChanged);
             // 
             // CWBasketForm
             // 
@@ -234,8 +414,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBtn;
-            this.ClientSize = new System.Drawing.Size(1156, 780);
+            this.ClientSize = new System.Drawing.Size(1350, 751);
             this.ControlBox = false;
+            this.Controls.Add(this.finishGb);
+            this.Controls.Add(this.materialGb);
             this.Controls.Add(this.dimsGb);
             this.Controls.Add(this.filepathTb);
             this.Controls.Add(this.partNumberTb);
@@ -251,6 +433,10 @@
             this.Load += new System.EventHandler(this.CWBasketForm_Load);
             this.dimsGb.ResumeLayout(false);
             this.dimsGb.PerformLayout();
+            this.materialGb.ResumeLayout(false);
+            this.materialGb.PerformLayout();
+            this.finishGb.ResumeLayout(false);
+            this.finishGb.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,5 +462,19 @@
         private System.Windows.Forms.TextBox widthCWSpcTb;
         private System.Windows.Forms.TextBox lengthCWSpcTb;
         private System.Windows.Forms.TextBox cwDiaTb;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox midFrameNumTb;
+        private System.Windows.Forms.GroupBox materialGb;
+        private System.Windows.Forms.RadioButton gsRb;
+        private System.Windows.Forms.RadioButton psRb;
+        private System.Windows.Forms.RadioButton ss316Rb;
+        private System.Windows.Forms.RadioButton ss304Rb;
+        private System.Windows.Forms.GroupBox finishGb;
+        private System.Windows.Forms.RadioButton otherMatRb;
+        private System.Windows.Forms.RadioButton otherFinishRb;
+        private System.Windows.Forms.RadioButton powderRb;
+        private System.Windows.Forms.RadioButton electroRb;
+        private System.Windows.Forms.RadioButton naturalRb;
+        private System.Windows.Forms.TextBox otherFinishTb;
     }
 }
