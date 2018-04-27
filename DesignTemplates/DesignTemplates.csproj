@@ -17,11 +17,10 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>InvAddIn</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>InvAddIn.TestMain</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -105,9 +104,15 @@
     <Compile Include="CWBasketForm.Designer.cs">
       <DependentUpon>CWBasketForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="StandardAddInServer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestMain.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DesignTemplates.X.manifest" />
@@ -121,6 +126,10 @@
   <ItemGroup>
     <EmbeddedResource Include="CWBasketForm.resx">
       <DependentUpon>CWBasketForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
