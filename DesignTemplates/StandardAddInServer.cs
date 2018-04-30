@@ -26,6 +26,14 @@ namespace DesignTemplates
         // iLogic AddinGUID
         private static string addInGUID = "124e7311-6a45-4301-8485-29fc60060a1f";
 
+        // Icons for each template (small and large)
+        private Icon smallCWBasketIcon;
+        private Icon largeCWBasketIcon;
+
+        // Associated IPictureDips for each Icon (small and Large)
+        stdole.IPictureDisp smallCWBasketDisp;
+        stdole.IPictureDisp largeCWBasketDisp;
+
         public StandardAddInServer()
         {
         }
@@ -43,19 +51,12 @@ namespace DesignTemplates
 
             ControlDefinitions controlDefs = m_inventorApplication.CommandManager.ControlDefinitions;
 
-            // Icons 
-            string appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-            
-            Icon small = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
-            Icon large = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
-
-            stdole.IPictureDisp smallIcon = PictureDispConverter.ToIPictureDisp(small);
-            stdole.IPictureDisp largeIcon = PictureDispConverter.ToIPictureDisp(large);
-            // End Icon code
+            // Create Icons 
+            buildIcons();            
 
             // Create button objects
             m_CrosswireBasketButton = controlDefs.AddButtonDefinition("Crosswire\nBasket", "Crosswire Basket Design Template", CommandTypesEnum.kShapeEditCmdType, addInGUID, "Generate a crosswire basket 3D model and\nengineering drawing using a template.",
-                "Crosswire Basket Design Template", smallIcon, largeIcon);
+                "Crosswire Basket Design Template", smallCWBasketDisp, largeCWBasketDisp);
 
             // TODO: Add ApplicationAddInServer.Activate implementation.
             // e.g. event initialization, command creation etc.
@@ -68,20 +69,7 @@ namespace DesignTemplates
                     {
                         try
                         {
-                            // Assembly Button
-                            // 1. Access the Zero Doc Ribbon
-                            Ribbon designRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["ZeroDoc"];
-
-                            // 2. Create our Custom tab
-                            RibbonTab designRibbonTab = designRibbon.RibbonTabs.Add("Design Templates", "Design Templates", Guid.NewGuid().ToString());
-
-                            // 3. Create a panel
-                            RibbonPanel designRibbonPanel = designRibbonTab.RibbonPanels.Add("Baskets", "Baskets", Guid.NewGuid().ToString());
-
-                            // 4. Add Button to panel
-                            designRibbonPanel.CommandControls.AddButton(m_CrosswireBasketButton, true);                     
-                                           
-
+                            buildCustomInterface();
                         }
                         catch (Exception ex)
                         {
@@ -152,7 +140,36 @@ namespace DesignTemplates
         }
 
         #endregion
+
+        private void buildCustomInterface()
+        {
+            // Assembly Button
+            // 1. Access the Zero Doc Ribbon
+            Ribbon designRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["ZeroDoc"];
+
+            // 2. Create our Custom tab
+            RibbonTab designRibbonTab = designRibbon.RibbonTabs.Add("Design Templates", "Design Templates", Guid.NewGuid().ToString());
+
+            // 3. Create a panel
+            RibbonPanel designRibbonPanel = designRibbonTab.RibbonPanels.Add("Baskets", "Baskets", Guid.NewGuid().ToString());
+
+            // 4. Add Button to panel
+            designRibbonPanel.CommandControls.AddButton(m_CrosswireBasketButton, true);
+        }
+
+
+        private void buildIcons()
+        {
+            string appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+
+            smallCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
+            largeCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
+
+            smallCWBasketDisp = PictureDispConverter.ToIPictureDisp(smallCWBasketIcon);
+            largeCWBasketDisp = PictureDispConverter.ToIPictureDisp(largeCWBasketIcon);
+        }
     }
+    
 
     /// <summary>
     /// This class handles the icons for the addin
