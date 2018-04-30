@@ -20,11 +20,12 @@ namespace InvAddIn
         private RadioButton materialRbChecked = null;
         private RadioButton finishRbChecked = null;
         private string cwBasketTemplatePath = @"C:\_Vault\Standards\Inventor\Templates\Crosswire Basket\";
+        
 
         /// <summary>
         /// For testing only.  Class will always need the Invnentor Application object passed to it
         /// </summary>
-        public CWBasketForm()
+        private CWBasketForm()
         {
             InitializeComponent();
         }
@@ -36,6 +37,7 @@ namespace InvAddIn
         public CWBasketForm(Inventor.Application invApp)
         {
             InitializeComponent();
+            this.CenterToParent();
             this.invApp = invApp;
         }
 
@@ -47,7 +49,7 @@ namespace InvAddIn
         private void CWBasketForm_Load(object sender, EventArgs e)
         {            
             this.Text = getVersion(); // Gets assembly version of the addin and Puts in title            
-            TopMost = true; // Always put tool on top          
+     //       TopMost = true; // Always put tool on top          
             resetDefault();   // Set Default Values for text blocks
         }
 
@@ -97,8 +99,6 @@ namespace InvAddIn
             if (result == DialogResult.OK)
             {
                 filepathTb.Text = filepathBrowserDialog.SelectedPath;
-                // Set path of generation
-                generatePath = @"" + filepathBrowserDialog.SelectedPath + "\\" + partNumberTb.Text;
             }
 
             filepathBrowserDialog.Dispose();
@@ -126,11 +126,15 @@ namespace InvAddIn
             // Check if any of the fields are emtpy.       
             if (allFieldsNonEmpty())
             {
+                mapParameters();    // Map Parameters to object
+
                 basketSpecs.copyTemplateFiles(cwBasketTemplatePath);   // Copy files
+                basketSpecs.openAssemblyFile();     // Open assembly file and turn off workplanes
                 basketSpecs.updateAssemblyParams();    // Updated parameters in assembly
                 basketSpecs.updateIlogic();    // update ilogic
-                // Update Material
-                // Update Finish
+                basketSpecs.updateMaterial();   // Update Material
+                basketSpecs.updateFinish(); // Update Finish
+ //               basketSpecs.openDrawingFile();  // Open Drawing file
 
                 // Close form
                 this.DialogResult = DialogResult.OK;
@@ -147,16 +151,12 @@ namespace InvAddIn
         {
             // Check if any of the fields are emtpy.       
             StringBuilder emptyTextBoxes = new StringBuilder();
+            ArrayList allControls = new ArrayList();
 
-            foreach (Control control in ActiveForm.Controls)
-            {
-                if (control is TextBox && string.IsNullOrWhiteSpace(control.Text))
-                {
-                    emptyTextBoxes.AppendLine(control.Tag.ToString());
-                }
-            }
+            allControls.AddRange(ActiveForm.Controls);
+            allControls.AddRange(dimsGb.Controls);
 
-            foreach (Control control in dimsGb.Controls)
+            foreach (Control control in allControls)
             {
                 if (control is TextBox && string.IsNullOrWhiteSpace(control.Text))
                 {
@@ -182,6 +182,9 @@ namespace InvAddIn
         private void mapParameters()
         {
             basketSpecs = new BasketSpecs();
+
+            // Set path of generation
+            generatePath = filepathTb.Text + "\\" + partNumberTb.Text + "\\";
 
             basketSpecs.invApp = invApp;
             basketSpecs.partNumber = Int64.Parse(partNumberTb.Text);
@@ -220,10 +223,18 @@ namespace InvAddIn
             lengthCWSpcTb.Text = "1.5";
             widthCWSpcTb.Text = "1.5";
             midFrameNumTb.Text = "2";
-            midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text)) / (Double.Parse(midFrameNumTb.Text) + 1));
+            midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text)) 
+                / (Double.Parse(midFrameNumTb.Text) + 1));
             ss304Rb.Checked = true;
             naturalRb.Checked = true;
             otherFinishTb.Text = "Generic";
+        }
+
+        private void calcWeigth()
+        {
+            double weight = 0.0;
+
+            weightLb.Text = String.Format("{0:#,0.000}", weight);
         }
 
         private void ss304Rb_CheckedChanged(object sender, EventArgs e)
@@ -270,6 +281,19 @@ namespace InvAddIn
         {
             finishRbChecked = sender as RadioButton;
             otherFinishTb.Enabled = otherFinishRb.Checked;
+        }
+
+        private void midFrameNumTb_TextChanged(object sender, EventArgs e)
+        {
+            if (Double.Parse(midFrameNumTb.Text) == 0.0)
+            {
+                midFrameSpcTb.Text = "0.0";
+            }
+            else if (!string.IsNullOrWhiteSpace(midFrameNumTb.Text))
+            {
+                midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
+                    / (Double.Parse(midFrameNumTb.Text) + 1));
+            }
         }
     }
 }

@@ -30,12 +30,17 @@ namespace InvAddIn
         /// <summary>
         /// Copies the template files to the specified filepath
         /// </summary>
-        /// <param name="templatePath">template filepath location</param>
+        /// <param name="templatePath">template filepath location</param>        
         public void copyTemplateFiles(string templatePath)
         {
             System.IO.Directory.CreateDirectory(location);
 
-            System.IO.File.Copy(templatePath, location);
+            // Copy all files in tempalte folder over
+            foreach (string file in System.IO.Directory.GetFiles(templatePath))
+            {
+                System.IO.File.Copy(file, file.Replace(templatePath, location), true);  
+            }
+            // Rename Assembly to part number
             System.IO.File.Move(location + "\\" + "Crosswire Basket.iam", location + "\\" + partNumber + ".iam");
 
             // Make all files read-write
@@ -44,6 +49,48 @@ namespace InvAddIn
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 fileInfo.IsReadOnly = false;
             }
+        }
+
+        /// <summary>
+        /// Opens the assembly file and turns off workplanes
+        /// </summary>
+        public void openAssemblyFile()
+        {
+            invApp.SilentOperation = true;
+
+            invApp.Documents.Open(location + "\\" + partNumber + ".iam");
+            workPlanesInvisible();
+        }
+
+        private void workPlanesInvisible()
+        {
+            AssemblyDocument assemblyDoc = (AssemblyDocument)invApp.ActiveDocument;
+
+            DocumentsEnumerator allRefDocs = assemblyDoc.AllReferencedDocuments;
+
+            foreach (Document oDoc in allRefDocs)
+            {
+                if (oDoc.DocumentType.Equals(DocumentTypeEnum.kPartDocumentObject) ||
+                    oDoc.DocumentType.Equals(DocumentTypeEnum.kAssemblyDocumentObject))
+                {
+                    dynamic oCompDef = ((PartDocument)oDoc).ComponentDefinition;
+                    WorkPlanes oDocWorkPlanes = oCompDef.WorkPlanes;
+
+                    foreach (WorkPlane oWp in oDocWorkPlanes)
+                    {
+                        oWp.Visible = false;
+                    }
+
+                    // Release objects
+                    oDocWorkPlanes = null;
+                    oCompDef = null;
+                }
+
+            }
+
+            // Release objects
+            allRefDocs = null;
+            assemblyDoc = null;
         }
 
         /// <summary>
@@ -57,32 +104,35 @@ namespace InvAddIn
             Parameters assemblyParameters = assemblyDef.Parameters;
             UserParameters assemblyUserParams = assemblyParameters.UserParameters;
             UserParameter assemblyUserParam;
-
+            
             #region "User Parameters Update"
             assemblyUserParam = assemblyUserParams["length"];
-            assemblyUserParam.Value = length;
+            assemblyUserParam.Expression = length + " in";
             assemblyUserParam = assemblyUserParams["width"];
-            assemblyUserParam.Value = width;
+            assemblyUserParam.Expression = width + " in";
             assemblyUserParam = assemblyUserParams["height"];
-            assemblyUserParam.Value = height;
+            assemblyUserParam.Expression = height + " in";
             assemblyUserParam = assemblyUserParams["frameDia"];
-            assemblyUserParam.Value = frameDia;
+            assemblyUserParam.Expression = frameDia + " in";
             assemblyUserParam = assemblyUserParams["cwDia"];
-            assemblyUserParam.Value = cwDia;
+            assemblyUserParam.Expression = cwDia + " in";
             assemblyUserParam = assemblyUserParams["cwSpcX"];
-            assemblyUserParam.Value = cwSpcX;
+            assemblyUserParam.Expression = cwSpcX + " in";
             assemblyUserParam = assemblyUserParams["cwSpcZ"];
-            assemblyUserParam.Value = cwSpcZ;
+            assemblyUserParam.Expression = cwSpcZ + " in";
             assemblyUserParam = assemblyUserParams["midFrameDia"];
-            assemblyUserParam.Value = midFrameDia;
+            assemblyUserParam.Expression = midFrameDia + " in";
             assemblyUserParam = assemblyUserParams["midFrameNum"];
-            assemblyUserParam.Value = midFrameNum;
+            assemblyUserParam.Expression = midFrameNum + " ul";
             #endregion
+
+            invApp.ActiveView.Fit();    // Fit part to view
 
             // Release objects
             assemblyUserParams = null;
             assemblyParameters = null;
             assemblyDef = null;
+            assemblyDoc.Save2();
             assemblyDoc = null;
         }
 
@@ -91,8 +141,7 @@ namespace InvAddIn
         /// </summary>
         public void updateIlogic()
         {
-            UpdateIlogic updateIlogic = new UpdateIlogic(invApp);
-            updateIlogic.updateParametersRule();
+            UpdateIlogic.updateParametersRule(invApp);
         }
 
         /// <summary>
@@ -132,6 +181,51 @@ namespace InvAddIn
             // Release objects
             allRefDocs = null;
             assemblyDoc = null;
+        }
+
+        /// <summary>
+        /// Updates the finish for all parts
+        /// </summary>
+        public void updateFinish()
+        {
+            AssemblyDocument assemblyDoc = (AssemblyDocument)invApp.ActiveDocument;
+            DocumentsEnumerator allRefDocs = assemblyDoc.AllReferencedDocuments;
+
+            // Find all part files and change the finish
+            foreach (Document oDoc in allRefDocs)
+            {
+                if (oDoc.DocumentType.Equals(DocumentTypeEnum.kPartDocumentObject))
+                {
+                    PartDocument partDoc = (PartDocument)oDoc;
+                    PropertySet partCustomPropSet = partDoc.PropertySets["Inventor User Defined Properties"];
+                    Property partProperty = partCustomPropSet["Finish"];
+
+                    partProperty.Value = finish;
+
+                    // Release Objectsz
+                    partDoc = null;
+                    partCustomPropSet = null;
+                    partProperty = null;
+                }      
+            }
+
+            // Release objects
+            allRefDocs = null;
+            assemblyDoc = null;
+        }
+
+        /// <summary>
+        /// Opens the drawing file
+        /// </summary>
+        public void openDrawingFile()
+        {
+            invApp.Documents.Open(location + "\\" + partNumber + ".dwg");
+            DrawingDocument oDrawing = (DrawingDocument)invApp.ActiveDocument;
+            oDrawing.Update2();
+            oDrawing.Save2();
+
+            // Release Objects
+            oDrawing = null;
         }
     }
 }

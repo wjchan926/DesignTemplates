@@ -61,6 +61,8 @@
             this.powderRb = new System.Windows.Forms.RadioButton();
             this.electroRb = new System.Windows.Forms.RadioButton();
             this.naturalRb = new System.Windows.Forms.RadioButton();
+            this.label4 = new System.Windows.Forms.Label();
+            this.weightLb = new System.Windows.Forms.Label();
             this.dimsGb.SuspendLayout();
             this.materialGb.SuspendLayout();
             this.finishGb.SuspendLayout();
@@ -78,9 +80,10 @@
             // 
             // generateBtn
             // 
-            this.generateBtn.Location = new System.Drawing.Point(1153, 690);
+            this.generateBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generateBtn.Location = new System.Drawing.Point(1153, 662);
             this.generateBtn.Name = "generateBtn";
-            this.generateBtn.Size = new System.Drawing.Size(187, 23);
+            this.generateBtn.Size = new System.Drawing.Size(187, 50);
             this.generateBtn.TabIndex = 1;
             this.generateBtn.Text = "Generate";
             this.generateBtn.UseVisualStyleBackColor = true;
@@ -225,6 +228,7 @@
             this.midFrameNumTb.TabIndex = 9;
             this.midFrameNumTb.Tag = "No. MIddle Frame(s)";
             this.midFrameNumTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.midFrameNumTb.TextChanged += new System.EventHandler(this.midFrameNumTb_TextChanged);
             // 
             // cwDiaTb
             // 
@@ -407,6 +411,23 @@
             this.naturalRb.UseVisualStyleBackColor = true;
             this.naturalRb.CheckedChanged += new System.EventHandler(this.naturalRb_CheckedChanged);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1156, 325);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(105, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Approximate Weight:";
+            // 
+            // weightLb
+            // 
+            this.weightLb.AutoSize = true;
+            this.weightLb.Location = new System.Drawing.Point(1159, 342);
+            this.weightLb.Name = "weightLb";
+            this.weightLb.Size = new System.Drawing.Size(0, 13);
+            this.weightLb.TabIndex = 12;
+            // 
             // CWBasketForm
             // 
             this.AcceptButton = this.generateBtn;
@@ -416,6 +437,8 @@
             this.CancelButton = this.cancelBtn;
             this.ClientSize = new System.Drawing.Size(1350, 751);
             this.ControlBox = false;
+            this.Controls.Add(this.weightLb);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.finishGb);
             this.Controls.Add(this.materialGb);
             this.Controls.Add(this.dimsGb);
@@ -476,5 +499,7 @@
         private System.Windows.Forms.RadioButton electroRb;
         private System.Windows.Forms.RadioButton naturalRb;
         private System.Windows.Forms.TextBox otherFinishTb;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label weightLb;
     }
 }

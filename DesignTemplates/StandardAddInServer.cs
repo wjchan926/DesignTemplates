@@ -45,9 +45,9 @@ namespace DesignTemplates
 
             // Icons 
             string appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
-
-            Icon small = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\cwBasket.ico");
-            Icon large = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\cwBasket.ico");
+            
+            Icon small = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
+            Icon large = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
 
             stdole.IPictureDisp smallIcon = PictureDispConverter.ToIPictureDisp(small);
             stdole.IPictureDisp largeIcon = PictureDispConverter.ToIPictureDisp(large);
@@ -62,29 +62,25 @@ namespace DesignTemplates
 
             if (firstTime)
             {
-
                 try
                 {
                     if (m_inventorApplication.UserInterfaceManager.InterfaceStyle == InterfaceStyleEnum.kRibbonInterface)
                     {
-                        // Assembly Button
-                        Ribbon assemblyRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["Assembly"];
-                        RibbonTab assemblyTab = assemblyRibbon.RibbonTabs["id_TabAssemble"];
-
-                        // Part Buttons
-                        Ribbon partRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["Part"];
-                        RibbonTab sketchTab = partRibbon.RibbonTabs["id_TabSketch"];
-                        RibbonTab sheetMetalTab = partRibbon.RibbonTabs["id_TabSheetMetal"];
-                        RibbonTab modelTab = partRibbon.RibbonTabs["id_TabModel"];
-
-
                         try
                         {
-                            // For ribbon interface
-                            // This is a new panel that can be made
-                            RibbonPanel panel = assemblyTab.RibbonPanels.Add("Assembly to Parts", "Autodesk:Assembly to Parts:Panel1", addInGUID, "", false);
-                            CommandControl control1 = panel.CommandControls.AddButton(m_CrosswireBasketButton, true, true, "", false);
+                            // Assembly Button
+                            // 1. Access the Zero Doc Ribbon
+                            Ribbon designRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["ZeroDoc"];
 
+                            // 2. Create our Custom tab
+                            RibbonTab designRibbonTab = designRibbon.RibbonTabs.Add("Design Templates", "Design Templates", Guid.NewGuid().ToString());
+
+                            // 3. Create a panel
+                            RibbonPanel designRibbonPanel = designRibbonTab.RibbonPanels.Add("Baskets", "Baskets", Guid.NewGuid().ToString());
+
+                            // 4. Add Button to panel
+                            designRibbonPanel.CommandControls.AddButton(m_CrosswireBasketButton, true);                     
+                                           
 
                         }
                         catch (Exception ex)
@@ -95,23 +91,20 @@ namespace DesignTemplates
                     else
                     {
                         // For classic interface, possibly incorrect code
-                        CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["AMxAssemblyPanelCmdBar"];
+                        CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["ZeroDoc"];
                         oCommandBar.Controls.AddButton(m_CrosswireBasketButton, 0);
                     }
                 }
                 catch
                 {
                     // For classic interface, possibly incorrect code
-                    CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["AMxAssemblyPanelCmdBar"];
+                    CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["ZeroDoc"];
                     oCommandBar.Controls.AddButton(m_CrosswireBasketButton, 0);
                 }
             }
 
             m_CrosswireBasketButton.OnExecute += new ButtonDefinitionSink_OnExecuteEventHandler(m_CrosswireBasketButton_OnExecute);
-
-
-
-
+            
         }
 
         public void Deactivate()
