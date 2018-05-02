@@ -241,7 +241,9 @@ namespace InvAddIn
         {
             invApp.Documents.Open(location + "\\" + partNumber + ".dwg", true);
             DrawingDocument oDrawing = (DrawingDocument)invApp.ActiveDocument;
-            
+
+            replaceDrawingRef(oDrawing);    // Update drawing references
+
             PropertySet oDrawingPropSet;
             Property oDrawingProperty;
 
@@ -270,6 +272,37 @@ namespace InvAddIn
         }
 
         /// <summary>
+        /// Replace drawing references
+        /// </summary>
+        /// <param name="drawingDocument">Drawing with dirty references</param>
+        public void replaceDrawingRef(DrawingDocument drawingDocument)
+        { 
+            File drawingFile = drawingDocument.File;
+            FileDescriptorsEnumerator fileDescriptors = drawingFile.ReferencedFileDescriptors;
+
+            using (System.IO.StreamWriter refList = System.IO.File.CreateText(@"\\msw-fp1\user$\wchan\Documents\References.txt"))
+            {
+                foreach (FileDescriptor f in fileDescriptors)
+                {
+                    refList.WriteLine(f.FullFileName);                    
+                }
+            }
+
+            Dictionary<string, string> referencedFiles = new Dictionary<string, string>();
+
+            foreach (FileDescriptor f in fileDescriptors){
+                int idx = f.FullFileName.LastIndexOf('\\');
+                referencedFiles.Add(f.FullFileName.Substring(idx + 1), f.FullFileName.Substring(0, idx));
+            }
+
+            fileDescriptors[referencedFiles["Crosswire Basket.iam"] + "\\Crosswire Basket.iam"].ReplaceReference(location + "\\" + partNumber + ".iam");
+            fileDescriptors[referencedFiles["Crosswire X.ipt"] + "\\Crosswire X.ipt"].ReplaceReference(location + "\\Crosswire X.ipt");
+            fileDescriptors[referencedFiles["Crosswire Z.ipt"] + "\\Crosswire Z.ipt"].ReplaceReference(location + "\\Crosswire Z.ipt");
+            fileDescriptors[referencedFiles["Mid Frame.ipt"] + "\\Mid Frame.ipt"].ReplaceReference(location + "\\Mid Frame.ipt");
+            fileDescriptors[referencedFiles["Top Frame.ipt"] + "\\Top Frame.ipt"].ReplaceReference(location + "\\Top Frame.ipt");
+        }
+
+        /// <summary>
         /// Creates a listof the property set and properties.
         /// For Testing purposes only.
         /// </summary>
@@ -288,6 +321,50 @@ namespace InvAddIn
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Represents a dictionary where keys are string and case insensitive.
+    /// May Need to use this later.
+    /// </summary>
+    public class CaseInsensitiveDictionary<TValue> : Dictionary<string, TValue>
+    {
+        public new bool ContainsKey(string key)
+        {
+            if (base.ContainsKey(key))
+                return true;
+
+            return !string.IsNullOrEmpty(GetActualKey(key));
+        }
+
+        public new TValue this[string key]
+        {
+            get
+            {
+                key = GetActualKey(key);
+                return base[key];
+            }
+            set
+            {
+                key = GetActualKey(key);
+                base[key] = value;
+            }
+        }
+
+        public new void Add(string key, TValue value)
+        {
+            key = GetActualKey(key);
+            base.Add(key, value);
+        }
+        /// <summary>
+        /// Tries to get the key in other case if present
+        /// </summary>
+        /// <param name="passedKey"></param>
+        /// <returns></returns>
+        private string GetActualKey(string passedKey)
+        {
+            return base.Keys.FirstOrDefault(x => string.Equals(x, passedKey, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

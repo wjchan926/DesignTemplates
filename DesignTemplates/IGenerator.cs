@@ -44,5 +44,10 @@ namespace InvAddIn
         /// Opens the drawing file in Inventor
         /// </summary>
         void openDrawingFile();
+
+        /// <summary>
+        /// Replaces dirty drawing references
+        /// </summary>
+        void replaceDrawingRef(Inventor.DrawingDocument drawing);
     }
 }
