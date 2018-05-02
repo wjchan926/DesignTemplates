@@ -13,7 +13,7 @@ namespace InvAddIn
     struct BasketSpecs : IGenerator
     {
         public Application invApp;
-        public long partNumber;
+        public string partNumber;
         public string location;
         public double length;
         public double width;
@@ -25,7 +25,8 @@ namespace InvAddIn
         public double midFrameDia;
         public double midFrameNum;
         public string material;
-        public string finish;            
+        public string finish;
+        public string description;     
 
         /// <summary>
         /// Copies the template files to the specified filepath
@@ -33,32 +34,49 @@ namespace InvAddIn
         /// <param name="templatePath">template filepath location</param>        
         public void copyTemplateFiles(string templatePath)
         {
-            System.IO.Directory.CreateDirectory(location);
-
-            // Copy all files in tempalte folder over
-            foreach (string file in System.IO.Directory.GetFiles(templatePath))
+            // Create if directory if it doesnt exist
+            if (!System.IO.Directory.Exists(location))
             {
-                System.IO.File.Copy(file, file.Replace(templatePath, location), true);  
-            }
-            // Rename Assembly to part number
-            System.IO.File.Move(location + "\\" + "Crosswire Basket.iam", location + "\\" + partNumber + ".iam");
+                System.IO.Directory.CreateDirectory(location);
+            }                 
 
-            // Make all files read-write
-            foreach (string file in System.IO.Directory.GetFiles(location))
+            // Try to copy template files
+            try
             {
-                System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
-                fileInfo.IsReadOnly = false;
+                // Copy all files in tempalte folder over
+                foreach (string file in System.IO.Directory.GetFiles(templatePath))
+                {
+                    System.IO.File.Copy(file, file.Replace(templatePath, location), true);
+                }
+                // Rename Assembly to part number
+                System.IO.File.Move(location + "\\" + "Crosswire Basket.iam", location + "\\" + partNumber + ".iam");
+
+                // Rename Drawing to part number
+                System.IO.File.Move(location + "\\" + "Crosswire Basket.dwg", location + "\\" + partNumber + ".dwg");
+
+                // Make all files read-write
+                foreach (string file in System.IO.Directory.GetFiles(location))
+                {
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
+                    fileInfo.IsReadOnly = false;
+                }
             }
+            catch (System.IO.FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+                System.Windows.Forms.MessageBox.Show("Template files not found.\nPlease Get updated template files from the Vault.", 
+                    "Templates Not Found");
+            } 
+                
+    
         }
 
         /// <summary>
         /// Opens the assembly file and turns off workplanes
         /// </summary>
         public void openAssemblyFile()
-        {
-            invApp.SilentOperation = true;
-
-            invApp.Documents.Open(location + "\\" + partNumber + ".iam");
+        {   
+            invApp.Documents.Open(location + "\\" + partNumber + ".iam", true);
             workPlanesInvisible();
         }
 
@@ -128,11 +146,13 @@ namespace InvAddIn
 
             invApp.ActiveView.Fit();    // Fit part to view
 
+            assemblyDoc.Update2();
+            assemblyDoc.Save2();
+
             // Release objects
             assemblyUserParams = null;
             assemblyParameters = null;
             assemblyDef = null;
-            assemblyDoc.Save2();
             assemblyDoc = null;
         }
 
@@ -219,13 +239,55 @@ namespace InvAddIn
         /// </summary>
         public void openDrawingFile()
         {
-            invApp.Documents.Open(location + "\\" + partNumber + ".dwg");
+            invApp.Documents.Open(location + "\\" + partNumber + ".dwg", true);
             DrawingDocument oDrawing = (DrawingDocument)invApp.ActiveDocument;
+            
+            PropertySet oDrawingPropSet;
+            Property oDrawingProperty;
+
+            // Set Drawing part number
+            oDrawingPropSet = oDrawing.PropertySets["Inventor Summary Information"];
+            oDrawingProperty = oDrawingPropSet["Title"];
+            oDrawingProperty.Value = partNumber;
+
+            // Set Part Number
+            oDrawingPropSet = oDrawing.PropertySets["Design Tracking Properties"];
+            oDrawingProperty = oDrawingPropSet["Part Number"];
+            oDrawingProperty.Value = partNumber;
+
+            // Set Drawing description
+            oDrawingProperty = oDrawingPropSet["Description"];
+            oDrawingProperty.Value = description;
+
+            // Update Drawing
             oDrawing.Update2();
             oDrawing.Save2();
 
             // Release Objects
+            oDrawingProperty = null;
+            oDrawingPropSet = null;
             oDrawing = null;
+        }
+
+        /// <summary>
+        /// Creates a listof the property set and properties.
+        /// For Testing purposes only.
+        /// </summary>
+        private void getPropertyList()
+        {
+            invApp.Documents.Open(location + "\\" + partNumber + ".dwg", true);
+            DrawingDocument oDrawing = (DrawingDocument)invApp.ActiveDocument;
+
+            using (System.IO.StreamWriter psList = System.IO.File.CreateText(@"\\msw-fp1\user$\wchan\Documents\PropertySetList.txt"))
+            {
+                foreach (PropertySet ps in oDrawing.PropertySets)
+                {
+                    foreach (Property p in ps)
+                    {
+                        psList.WriteLine(ps.Name + ": " + p.Name);
+                    }
+                }
+            }
         }
     }
 }

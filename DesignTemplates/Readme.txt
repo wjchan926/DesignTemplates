@@ -3,8 +3,8 @@
 	
 	Summary:
 	===============================
-	This Add-in provides Marlin engineers wtih the ability to generate products using a simplified GUI.  
-	After applying some basic parameters from within the GUI, the user can generate engineering draiwngs and models
+	This Add-in provides Marlin engineers with the ability to generate products using a simplified GUI.  
+	After applying some basic parameters from within the GUI, the user can generate engineering drawings and models
 	in a fraction of the time it would typically take to model and draw from scratch.
 
 	Requirements:
@@ -15,7 +15,7 @@
 	Installation:
 	=============
 	Installation files are not provided.
-	Contact wchan@marlinsteel.com for installation details.
+	Contact wesley.j.chan@gmail.com for installation details.
 
 	License:
 	========

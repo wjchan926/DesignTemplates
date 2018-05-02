@@ -58,7 +58,7 @@ namespace InvAddIn
                 //Update Code
                 try
                 {
-                    iLogicAuto.DeleteRule(currentAssembly, ruleName);
+                    iLogicAuto.DeleteRule((Document)currentAssembly, ruleName);
                 }
                 catch (Exception ex)
                 {
@@ -66,8 +66,9 @@ namespace InvAddIn
                 }
                 finally
                 {
-                    iLogicAuto.AddRule(currentAssembly, ruleName, iLogicCode.ToString());
-                }
+                    iLogicAuto.AddRule((Document)currentAssembly, ruleName, iLogicCode.ToString());
+                }                
+                
             }
         }
 

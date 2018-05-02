@@ -63,6 +63,8 @@
             this.naturalRb = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
             this.weightLb = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.descriptionTb = new System.Windows.Forms.TextBox();
             this.dimsGb.SuspendLayout();
             this.materialGb.SuspendLayout();
             this.finishGb.SuspendLayout();
@@ -171,6 +173,7 @@
             this.heightTb.TabIndex = 2;
             this.heightTb.Tag = "Height";
             this.heightTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.heightTb.TextChanged += new System.EventHandler(this.heightTb_TextChanged);
             // 
             // frameDiaTb
             // 
@@ -274,7 +277,7 @@
             this.materialGb.Controls.Add(this.psRb);
             this.materialGb.Controls.Add(this.ss316Rb);
             this.materialGb.Controls.Add(this.ss304Rb);
-            this.materialGb.Location = new System.Drawing.Point(1156, 51);
+            this.materialGb.Location = new System.Drawing.Point(1156, 90);
             this.materialGb.Name = "materialGb";
             this.materialGb.Size = new System.Drawing.Size(187, 141);
             this.materialGb.TabIndex = 9;
@@ -348,7 +351,7 @@
             this.finishGb.Controls.Add(this.powderRb);
             this.finishGb.Controls.Add(this.electroRb);
             this.finishGb.Controls.Add(this.naturalRb);
-            this.finishGb.Location = new System.Drawing.Point(1156, 198);
+            this.finishGb.Location = new System.Drawing.Point(1156, 237);
             this.finishGb.Name = "finishGb";
             this.finishGb.Size = new System.Drawing.Size(187, 120);
             this.finishGb.TabIndex = 10;
@@ -414,7 +417,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1156, 325);
+            this.label4.Location = new System.Drawing.Point(1160, 360);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 13);
             this.label4.TabIndex = 11;
@@ -423,10 +426,26 @@
             // weightLb
             // 
             this.weightLb.AutoSize = true;
-            this.weightLb.Location = new System.Drawing.Point(1159, 342);
+            this.weightLb.Location = new System.Drawing.Point(1163, 377);
             this.weightLb.Name = "weightLb";
             this.weightLb.Size = new System.Drawing.Size(0, 13);
             this.weightLb.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(1153, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Part Description:";
+            // 
+            // descriptionTb
+            // 
+            this.descriptionTb.Location = new System.Drawing.Point(1156, 64);
+            this.descriptionTb.Name = "descriptionTb";
+            this.descriptionTb.Size = new System.Drawing.Size(181, 20);
+            this.descriptionTb.TabIndex = 14;
             // 
             // CWBasketForm
             // 
@@ -437,6 +456,8 @@
             this.CancelButton = this.cancelBtn;
             this.ClientSize = new System.Drawing.Size(1350, 751);
             this.ControlBox = false;
+            this.Controls.Add(this.descriptionTb);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.weightLb);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.finishGb);
@@ -501,5 +522,7 @@
         private System.Windows.Forms.TextBox otherFinishTb;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label weightLb;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox descriptionTb;
     }
 }

@@ -162,8 +162,8 @@ namespace DesignTemplates
         {
             string appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
 
-            smallCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
-            largeCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasket.ico");
+            smallCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasketV2.ico");
+            largeCWBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasketV2.ico");
 
             smallCWBasketDisp = PictureDispConverter.ToIPictureDisp(smallCWBasketIcon);
             largeCWBasketDisp = PictureDispConverter.ToIPictureDisp(largeCWBasketIcon);

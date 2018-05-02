@@ -129,12 +129,15 @@ namespace InvAddIn
                 mapParameters();    // Map Parameters to object
 
                 basketSpecs.copyTemplateFiles(cwBasketTemplatePath);   // Copy files
+
+                invApp.SilentOperation = true;  // Inventor silent operation               
+
                 basketSpecs.openAssemblyFile();     // Open assembly file and turn off workplanes
                 basketSpecs.updateAssemblyParams();    // Updated parameters in assembly
                 basketSpecs.updateIlogic();    // update ilogic
                 basketSpecs.updateMaterial();   // Update Material
                 basketSpecs.updateFinish(); // Update Finish
- //               basketSpecs.openDrawingFile();  // Open Drawing file
+                basketSpecs.openDrawingFile();  // Open Drawing file
 
                 // Close form
                 this.DialogResult = DialogResult.OK;
@@ -187,7 +190,7 @@ namespace InvAddIn
             generatePath = filepathTb.Text + "\\" + partNumberTb.Text + "\\";
 
             basketSpecs.invApp = invApp;
-            basketSpecs.partNumber = Int64.Parse(partNumberTb.Text);
+            basketSpecs.partNumber = partNumberTb.Text;
             basketSpecs.location = generatePath;
             basketSpecs.length = Double.Parse(lengthTb.Text);
             basketSpecs.width = Double.Parse(widthTb.Text);
@@ -200,6 +203,7 @@ namespace InvAddIn
             basketSpecs.midFrameNum = Double.Parse(midFrameNumTb.Text);
             basketSpecs.material = materialRbChecked.Tag.ToString();
             basketSpecs.finish = finishRbChecked.Text.ToUpper();
+            basketSpecs.description = descriptionTb.Text.ToUpper();
         }
 
         /// <summary>
@@ -228,6 +232,7 @@ namespace InvAddIn
             ss304Rb.Checked = true;
             naturalRb.Checked = true;
             otherFinishTb.Text = "Generic";
+            descriptionTb.Text = "";
         }
 
         private void calcWeigth()
@@ -295,5 +300,20 @@ namespace InvAddIn
                     / (Double.Parse(midFrameNumTb.Text) + 1));
             }
         }
+
+        private void heightTb_TextChanged(object sender, EventArgs e)
+        {
+            //if (Double.Parse(midFrameNumTb.Text) == 0.0)
+            //{
+            //    midFrameSpcTb.Text = "0.0";
+            //}
+            //else if (!string.IsNullOrWhiteSpace(heightTb.Text) && !string.IsNullOrWhiteSpace(midFrameNumTb.Text))
+            //{
+            //    midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
+            //        / (Double.Parse(midFrameNumTb.Text) + 1));
+            //}
+        }
+
+        
     }
 }
