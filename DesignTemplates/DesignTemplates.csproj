@@ -101,7 +101,14 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BasketSpecs.cs" />
+    <Compile Include="MeshBasketSpecs.cs" />
+    <Compile Include="CWBasketSpecs.cs" />
+    <Compile Include="MeshBasketForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MeshBasketForm.Designer.cs">
+      <DependentUpon>MeshBasketForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CWBasketForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +136,9 @@
     <None Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MeshBasketForm.resx">
+      <DependentUpon>MeshBasketForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CWBasketForm.resx">
       <DependentUpon>CWBasketForm.cs</DependentUpon>
     </EmbeddedResource>

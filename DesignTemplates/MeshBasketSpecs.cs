@@ -10,7 +10,7 @@ namespace InvAddIn
     /// <summary>
     /// This struct represents the user parameters needed to generate the part
     /// </summary>
-    struct BasketSpecs : IGenerator
+    struct MeshBasketSpecs : IGenerator
     {
         public Application invApp;
         public string partNumber;
@@ -18,12 +18,13 @@ namespace InvAddIn
         public double length;
         public double width;
         public double height;
-        public double frameDia;
-        public double cwDia;
-        public double cwSpcX;
-        public double cwSpcZ;
-        public double midFrameDia;
-        public double midFrameNum;
+        public double wireDia;
+        public double meshDia;
+        public double handleHeight;
+        public double smThk;
+        public double handleWidth;
+        public string mesh;
+        public int meshNum;
         public string material;
         public string finish;
         public string description;     
@@ -46,13 +47,32 @@ namespace InvAddIn
                 // Copy all files in tempalte folder over
                 foreach (string file in System.IO.Directory.GetFiles(templatePath))
                 {
-                    System.IO.File.Copy(file, file.Replace(templatePath, location), true);
+                    try
+                    {
+                        System.IO.File.Copy(file, file.Replace(templatePath, location), true);
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        System.Windows.Forms.MessageBox.Show("File already exists.", "File Exists!");
+                        throw;
+                    }
                 }
-                // Rename Assembly to part number
-                System.IO.File.Move(location + "\\" + "Crosswire Basket.iam", location + "\\" + partNumber + ".iam");
 
-                // Rename Drawing to part number
-                System.IO.File.Move(location + "\\" + "Crosswire Basket.dwg", location + "\\" + partNumber + ".dwg");
+                try
+                {
+                    // Rename Assembly to part number
+                    System.IO.File.Move(location + "\\" + "Mesh Basket.iam", location + "\\" + partNumber + ".iam");
+
+                    // Rename Drawing to part number
+                    System.IO.File.Move(location + "\\" + "Mesh Basket.dwg", location + "\\" + partNumber + ".dwg");
+                }
+                catch (System.IO.IOException e)
+                {
+                    Console.WriteLine(e.Message);
+                    System.Windows.Forms.MessageBox.Show("File already exists.", "File Exists!");
+                    throw;
+                }
 
                 // Make all files read-write
                 foreach (string file in System.IO.Directory.GetFiles(location))
@@ -133,18 +153,18 @@ namespace InvAddIn
             assemblyUserParam.Expression = width + " in";
             assemblyUserParam = assemblyUserParams["height"];
             assemblyUserParam.Expression = height + " in";
-            assemblyUserParam = assemblyUserParams["frameDia"];
-            assemblyUserParam.Expression = frameDia + " in";
-            assemblyUserParam = assemblyUserParams["cwDia"];
-            assemblyUserParam.Expression = cwDia + " in";
-            assemblyUserParam = assemblyUserParams["cwSpcX"];
-            assemblyUserParam.Expression = cwSpcX + " in";
-            assemblyUserParam = assemblyUserParams["cwSpcZ"];
-            assemblyUserParam.Expression = cwSpcZ + " in";
-            assemblyUserParam = assemblyUserParams["midFrameDia"];
-            assemblyUserParam.Expression = midFrameDia + " in";
-            assemblyUserParam = assemblyUserParams["midFrameNum"];
-            assemblyUserParam.Expression = midFrameNum + " ul";
+            assemblyUserParam = assemblyUserParams["wireDia"];
+            assemblyUserParam.Expression = wireDia + " in";
+            assemblyUserParam = assemblyUserParams["meshDia"];
+            assemblyUserParam.Expression = meshDia + " in";
+            assemblyUserParam = assemblyUserParams["handleHeight"];
+            assemblyUserParam.Expression = handleHeight + " in";
+            assemblyUserParam = assemblyUserParams["smThk"];
+            assemblyUserParam.Expression = smThk + " in";
+            assemblyUserParam = assemblyUserParams["handleWidth"];
+            assemblyUserParam.Expression = handleWidth + " in";
+            assemblyUserParam = assemblyUserParams["meshNum"];
+            assemblyUserParam.Expression = meshNum + " ul";
             #endregion
 
             invApp.ActiveView.Fit();    // Fit part to view
@@ -185,7 +205,7 @@ namespace InvAddIn
 
                     // Try to set the material
                     try
-                    {
+                    {                        
                         partDef.Material.Name = material;
                     }
                     catch
@@ -225,7 +245,7 @@ namespace InvAddIn
 
                     partProperty.Value = finish;
 
-                    // Release Objectsz
+                    // Release Objects
                     partDoc = null;
                     partCustomPropSet = null;
                     partProperty = null;
@@ -283,14 +303,6 @@ namespace InvAddIn
             File drawingFile = drawingDocument.File;
             FileDescriptorsEnumerator fileDescriptors = drawingFile.ReferencedFileDescriptors;
 
-            using (System.IO.StreamWriter refList = System.IO.File.CreateText(@"\\msw-fp1\user$\wchan\Documents\References.txt"))
-            {
-                foreach (FileDescriptor f in fileDescriptors)
-                {
-                    refList.WriteLine(f.FullFileName);                    
-                }
-            }
-
             Dictionary<string, string> referencedFiles = new Dictionary<string, string>();
 
             foreach (FileDescriptor f in fileDescriptors){
@@ -298,76 +310,17 @@ namespace InvAddIn
                 referencedFiles.Add(f.FullFileName.Substring(idx + 1), f.FullFileName.Substring(0, idx));
             }
 
-            fileDescriptors[referencedFiles["Crosswire Basket.iam"] + "\\Crosswire Basket.iam"].ReplaceReference(location + "\\" + partNumber + ".iam");
-            fileDescriptors[referencedFiles["Crosswire X.ipt"] + "\\Crosswire X.ipt"].ReplaceReference(location + "\\Crosswire X.ipt");
-            fileDescriptors[referencedFiles["Crosswire Z.ipt"] + "\\Crosswire Z.ipt"].ReplaceReference(location + "\\Crosswire Z.ipt");
-            fileDescriptors[referencedFiles["Mid Frame.ipt"] + "\\Mid Frame.ipt"].ReplaceReference(location + "\\Mid Frame.ipt");
-            fileDescriptors[referencedFiles["Top Frame.ipt"] + "\\Top Frame.ipt"].ReplaceReference(location + "\\Top Frame.ipt");
-        }
-
-        /// <summary>
-        /// Creates a listof the property set and properties.
-        /// For Testing purposes only.
-        /// </summary>
-        private void getPropertyList()
-        {
-            invApp.Documents.Open(location + "\\" + partNumber + ".dwg", true);
-            DrawingDocument oDrawing = (DrawingDocument)invApp.ActiveDocument;
-
-            using (System.IO.StreamWriter psList = System.IO.File.CreateText(@"\\msw-fp1\user$\wchan\Documents\PropertySetList.txt"))
-            {
-                foreach (PropertySet ps in oDrawing.PropertySets)
-                {
-                    foreach (Property p in ps)
-                    {
-                        psList.WriteLine(ps.Name + ": " + p.Name);
-                    }
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Represents a dictionary where keys are string and case insensitive.
-    /// May Need to use this later.
-    /// </summary>
-    public class CaseInsensitiveDictionary<TValue> : Dictionary<string, TValue>
-    {
-        public new bool ContainsKey(string key)
-        {
-            if (base.ContainsKey(key))
-                return true;
-
-            return !string.IsNullOrEmpty(GetActualKey(key));
-        }
-
-        public new TValue this[string key]
-        {
-            get
-            {
-                key = GetActualKey(key);
-                return base[key];
-            }
-            set
-            {
-                key = GetActualKey(key);
-                base[key] = value;
-            }
-        }
-
-        public new void Add(string key, TValue value)
-        {
-            key = GetActualKey(key);
-            base.Add(key, value);
-        }
-        /// <summary>
-        /// Tries to get the key in other case if present
-        /// </summary>
-        /// <param name="passedKey"></param>
-        /// <returns></returns>
-        private string GetActualKey(string passedKey)
-        {
-            return base.Keys.FirstOrDefault(x => string.Equals(x, passedKey, StringComparison.OrdinalIgnoreCase));
-        }
-    }
+            #region "Replace Drawing References"
+            fileDescriptors[referencedFiles["MESH BASKET.iam"] + "\\MESH BASKET.iam"].ReplaceReference(location + "\\" + partNumber + ".iam");
+            fileDescriptors[referencedFiles["FRAME.ipt"] + "\\FRAME.ipt"].ReplaceReference(location + "\\FRAME.ipt");
+            fileDescriptors[referencedFiles["BOTTOM T BAR.ipt"] + "\\BOTTOM T BAR.ipt"].ReplaceReference(location + "\\BOTTOM T BAR.ipt");
+            fileDescriptors[referencedFiles["HANDLE.ipt"] + "\\HANDLE.ipt"].ReplaceReference(location + "\\HANDLE.ipt");
+            fileDescriptors[referencedFiles["MESH.ipt"] + "\\MESH.ipt"].ReplaceReference(location + "\\MESH.ipt");
+            fileDescriptors[referencedFiles["SM CORNER.ipt"] + "\\SM CORNER.ipt"].ReplaceReference(location + "\\SM CORNER.ipt");
+            fileDescriptors[referencedFiles["SM LENGTH EDGE.ipt"] + "\\SM LENGTH EDGE.ipt"].ReplaceReference(location + "\\SM LENGTH EDGE.ipt");
+            fileDescriptors[referencedFiles["VERTICAL T BAR.ipt"] + "\\VERTICAL T BAR.ipt"].ReplaceReference(location + "\\VERTICAL T BAR.ipt");
+            fileDescriptors[referencedFiles["MESH DETAIL.ipt"] + "\\MESH DETAIL.ipt"].ReplaceReference(location + "\\MESH DETAIL.ipt");
+            #endregion
+        }               
+    }    
 }

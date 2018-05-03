@@ -12,19 +12,19 @@ using System.IO;
 
 namespace InvAddIn
 {
-    public partial class CWBasketForm : Form
+    public partial class MeshBasketForm : Form
     {
         Inventor.Application invApp;
-        CWBasketSpecs basketSpecs;        
+        MeshBasketSpecs basketSpecs;        
         private string generatePath;
         private RadioButton materialRbChecked = null;
         private RadioButton finishRbChecked = null;
-        private string templatePath = @"C:\_Vault\Standards\Inventor\Templates\Crosswire Basket\";
+        private string templatePath = @"C:\_Vault\Standards\Inventor\Templates\Mesh Basket\";
         
         /// <summary>
         /// For testing only.  Object will always need the Invnentor Application object passed to it during instantiation
         /// </summary>
-        private CWBasketForm()
+        private MeshBasketForm()
         {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace InvAddIn
         /// Constructor for the CWBasket Form.
         /// </summary>
         /// <param name="invApp">Current Inventor Applciation</param>
-        public CWBasketForm(Inventor.Application invApp)
+        public MeshBasketForm(Inventor.Application invApp)
         {
             InitializeComponent();
             this.CenterToParent();
@@ -46,7 +46,7 @@ namespace InvAddIn
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CWBasketForm_Load(object sender, EventArgs e)
+        private void MeshBasketForm_Load(object sender, EventArgs e)
         {            
             this.Text = getVersion(); // Gets assembly version of the addin and Puts in title            
             TopMost = true; // Always put tool on top          
@@ -184,7 +184,7 @@ namespace InvAddIn
         /// </summary>
         private void mapParameters()
         {
-            basketSpecs = new CWBasketSpecs();
+            basketSpecs = new MeshBasketSpecs();
 
             // Set path of generation
             generatePath = filepathTb.Text + "\\" + partNumberTb.Text + "\\";
@@ -192,18 +192,10 @@ namespace InvAddIn
             basketSpecs.invApp = invApp;
             basketSpecs.partNumber = partNumberTb.Text;
             basketSpecs.location = generatePath;
-            basketSpecs.length = Double.Parse(lengthTb.Text);
-            basketSpecs.width = Double.Parse(widthTb.Text);
-            basketSpecs.height = Double.Parse(heightTb.Text);
-            basketSpecs.frameDia = Double.Parse(frameDiaTb.Text);
-            basketSpecs.cwDia = Double.Parse(cwDiaTb.Text);
-            basketSpecs.cwSpcX = Double.Parse(lengthCWSpcTb.Text);
-            basketSpecs.cwSpcZ = Double.Parse(widthCWSpcTb.Text);
-            basketSpecs.midFrameDia = Double.Parse(midFrameDiaTb.Text);
-            basketSpecs.midFrameNum = Double.Parse(midFrameNumTb.Text);
-            basketSpecs.material = materialRbChecked.Tag.ToString();
-            basketSpecs.finish = finishRbChecked.Text.ToUpper();
-            basketSpecs.description = descriptionTb.Text.ToUpper();
+            //basketSpecs.length = Double.Parse(lengthTb.Text);
+            //basketSpecs.width = Double.Parse(widthTb.Text);
+            //basketSpecs.height = Double.Parse(heightTb.Text);
+            //basketSpecs.wireDia = Double.Parse(frameDiaTb.Text);
         }
 
         /// <summary>
@@ -221,21 +213,19 @@ namespace InvAddIn
         /// </summary>
         private void resetDefault()
         {
-            lengthTb.Text = "15";
-            widthTb.Text = "10";
-            heightTb.Text = "5";
-            frameDiaTb.Text = "0.25";
-            cwDiaTb.Text = "0.1205";
-            midFrameDiaTb.Text = "0.1205";
-            lengthCWSpcTb.Text = "1.5";
-            widthCWSpcTb.Text = "1.5";
-            midFrameNumTb.Text = "2";
+            //lengthTb.Text = "15";
+            //widthTb.Text = "10";
+            //heightTb.Text = "5";
+            //frameDiaTb.Text = "0.25";
+            //cwDiaTb.Text = "0.1205";
+            //midFrameDiaTb.Text = "0.1205";
+            //lengthCWSpcTb.Text = "1.5";
+            //widthCWSpcTb.Text = "1.5";
+            //midFrameNumTb.Text = "2";
             ss304Rb.Checked = true;
             naturalRb.Checked = true;
             otherFinishTb.Text = "Generic";
-            descriptionTb.Text = "";
-
-            midFrameSpcLb.Text = calcMidFrameSpc();
+            descriptionTb.Text = ""; 
         }
 
         /// <summary>
@@ -248,26 +238,7 @@ namespace InvAddIn
 
             weightLb.Text = String.Format("{0:#,0.000}", weight);
         }
-
-        /// <summary>
-        /// Calculates the mid frame spacing
-        /// </summary>
-        /// <returns>0 if height or mid frame num is 0, spacing as a string otherwise.</returns>
-        private string calcMidFrameSpc()
-        {         
-            if (string.IsNullOrWhiteSpace(midFrameNumTb.Text) || string.IsNullOrWhiteSpace(heightTb.Text) || 
-                Double.Parse(midFrameNumTb.Text) == 0.0 || Double.Parse(heightTb.Text) == 0.0)
-            {
-                return "0.0";
-            }
-            else
-            {
-                return String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
-                / (Double.Parse(midFrameNumTb.Text) + 1));
-            }  
-    
-        }
-
+        
         private void ss304Rb_CheckedChanged(object sender, EventArgs e)
         {
             materialRbChecked = sender as RadioButton;
@@ -312,16 +283,6 @@ namespace InvAddIn
         {
             finishRbChecked = sender as RadioButton;
             otherFinishTb.Enabled = otherFinishRb.Checked;
-        }
-
-        private void midFrameNumTb_TextChanged(object sender, EventArgs e)
-        {
-            midFrameSpcLb.Text = calcMidFrameSpc();
-        }
-
-        private void heightTb_TextChanged(object sender, EventArgs e)
-        {
-            midFrameSpcLb.Text = calcMidFrameSpc();
         }
         
     }

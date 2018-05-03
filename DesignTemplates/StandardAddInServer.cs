@@ -16,23 +16,27 @@ namespace DesignTemplates
     [GuidAttribute("6e3e7db7-6b73-4695-9fe8-86d035e9b969")]
     public class StandardAddInServer : Inventor.ApplicationAddInServer
     {
-
         // Inventor application object.
         private Inventor.Application m_inventorApplication;
 
         // Buttons for Each Design Template
         private ButtonDefinition m_CrosswireBasketButton;
-        
+        private ButtonDefinition m_MeshBasketButton;
+
         // iLogic AddinGUID
         private static string addInGUID = "124e7311-6a45-4301-8485-29fc60060a1f";
 
         // Icons for each template (small and large)
         private Icon smallCWBasketIcon;
         private Icon largeCWBasketIcon;
+        private Icon smallMeshBasketIcon;
+        private Icon largeMeshBasketIcon;
 
         // Associated IPictureDips for each Icon (small and Large)
         stdole.IPictureDisp smallCWBasketDisp;
         stdole.IPictureDisp largeCWBasketDisp;
+        stdole.IPictureDisp smallMeshBasketDisp;
+        stdole.IPictureDisp largeMeshBasketDisp;
 
         public StandardAddInServer()
         {
@@ -57,6 +61,8 @@ namespace DesignTemplates
             // Create button objects
             m_CrosswireBasketButton = controlDefs.AddButtonDefinition("Crosswire\nBasket", "Crosswire Basket Design Template", CommandTypesEnum.kShapeEditCmdType, addInGUID, "Generate a crosswire basket 3D model and\nengineering drawing using a template.",
                 "Crosswire Basket Design Template", smallCWBasketDisp, largeCWBasketDisp);
+            m_MeshBasketButton = controlDefs.AddButtonDefinition("Mesh\nBasket", "Mesh Basket Design Template", CommandTypesEnum.kShapeEditCmdType, addInGUID, "Generate a mesh basket 3D model and\nengineering drawing using a template.",
+                "Mesh Basket Design Template", smallMeshBasketDisp, largeMeshBasketDisp);
 
             // TODO: Add ApplicationAddInServer.Activate implementation.
             // e.g. event initialization, command creation etc.
@@ -81,6 +87,7 @@ namespace DesignTemplates
                         // For classic interface, possibly incorrect code
                         CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["ZeroDoc"];
                         oCommandBar.Controls.AddButton(m_CrosswireBasketButton, 0);
+                        oCommandBar.Controls.AddButton(m_MeshBasketButton, 0);
                     }
                 }
                 catch
@@ -88,11 +95,13 @@ namespace DesignTemplates
                     // For classic interface, possibly incorrect code
                     CommandBar oCommandBar = m_inventorApplication.UserInterfaceManager.CommandBars["ZeroDoc"];
                     oCommandBar.Controls.AddButton(m_CrosswireBasketButton, 0);
+                    oCommandBar.Controls.AddButton(m_MeshBasketButton, 0);
                 }
             }
 
             m_CrosswireBasketButton.OnExecute += new ButtonDefinitionSink_OnExecuteEventHandler(m_CrosswireBasketButton_OnExecute);
-            
+            m_MeshBasketButton.OnExecute += new ButtonDefinitionSink_OnExecuteEventHandler(m_MeshBasketButton_OnExecute);
+
         }
 
         public void Deactivate()
@@ -108,6 +117,9 @@ namespace DesignTemplates
 
             Marshal.ReleaseComObject(m_CrosswireBasketButton);
             m_CrosswireBasketButton = null;
+
+            Marshal.ReleaseComObject(m_MeshBasketButton);
+            m_MeshBasketButton = null;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -139,6 +151,12 @@ namespace DesignTemplates
             cwBasketForm.ShowDialog();
         }
 
+        public void m_MeshBasketButton_OnExecute(NameValueMap Context)
+        {
+            MeshBasketForm meshBasketForm = new MeshBasketForm(m_inventorApplication);
+            meshBasketForm.ShowDialog();
+        }
+
         #endregion
 
         private void buildCustomInterface()
@@ -155,6 +173,24 @@ namespace DesignTemplates
 
             // 4. Add Button to panel
             designRibbonPanel.CommandControls.AddButton(m_CrosswireBasketButton, true);
+            designRibbonPanel.CommandControls.AddButton(m_MeshBasketButton, true);
+        }
+
+        private void removeCustomInterface()
+        {
+            // Assembly Button
+            // 1. Access the Zero Doc Ribbon
+            Ribbon designRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["ZeroDoc"];
+
+            // 2. Create our Custom tab
+            RibbonTab designRibbonTab = designRibbon.RibbonTabs.Add("Design Templates", "Design Templates", Guid.NewGuid().ToString());   
+
+            // 3. Create a panel
+            RibbonPanel designRibbonPanel = designRibbonTab.RibbonPanels.Add("Baskets", "Baskets", Guid.NewGuid().ToString());
+
+            // 4. Add Button to panel
+            designRibbonPanel.CommandControls.AddButton(m_CrosswireBasketButton, true);
+            designRibbonPanel.CommandControls.AddButton(m_MeshBasketButton, true);
         }
 
 
@@ -167,6 +203,12 @@ namespace DesignTemplates
 
             smallCWBasketDisp = PictureDispConverter.ToIPictureDisp(smallCWBasketIcon);
             largeCWBasketDisp = PictureDispConverter.ToIPictureDisp(largeCWBasketIcon);
+
+            smallMeshBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasketV2.ico");
+            largeMeshBasketIcon = new Icon(appData + @"\Autodesk\ApplicationPlugins\DesignTemplates\Icons\cwBasketV2.ico");
+
+            smallMeshBasketDisp = PictureDispConverter.ToIPictureDisp(smallMeshBasketIcon);
+            largeMeshBasketDisp = PictureDispConverter.ToIPictureDisp(largeMeshBasketIcon);
         }
     }
     

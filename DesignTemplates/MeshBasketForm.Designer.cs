@@ -1,6 +1,6 @@
 ﻿namespace InvAddIn
 {
-    partial class CWBasketForm
+    partial class MeshBasketForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CWBasketForm));
             this.browseBtn = new System.Windows.Forms.Button();
             this.generateBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
@@ -37,18 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.partNumberTb = new System.Windows.Forms.TextBox();
             this.filepathTb = new System.Windows.Forms.TextBox();
-            this.lengthTb = new System.Windows.Forms.TextBox();
-            this.widthTb = new System.Windows.Forms.TextBox();
-            this.heightTb = new System.Windows.Forms.TextBox();
-            this.frameDiaTb = new System.Windows.Forms.TextBox();
-            this.midFrameDiaTb = new System.Windows.Forms.TextBox();
             this.dimsGb = new System.Windows.Forms.GroupBox();
-            this.midFrameSpcLb = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.midFrameNumTb = new System.Windows.Forms.TextBox();
-            this.cwDiaTb = new System.Windows.Forms.TextBox();
-            this.widthCWSpcTb = new System.Windows.Forms.TextBox();
-            this.lengthCWSpcTb = new System.Windows.Forms.TextBox();
             this.materialGb = new System.Windows.Forms.GroupBox();
             this.otherMatRb = new System.Windows.Forms.RadioButton();
             this.gsRb = new System.Windows.Forms.RadioButton();
@@ -65,7 +53,6 @@
             this.weightLb = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.descriptionTb = new System.Windows.Forms.TextBox();
-            this.dimsGb.SuspendLayout();
             this.materialGb.SuspendLayout();
             this.finishGb.SuspendLayout();
             this.SuspendLayout();
@@ -127,7 +114,7 @@
             this.label2.Location = new System.Drawing.Point(1153, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 13);
-            this.label2.TabIndex = 6;
+            this.label2.TabIndex = 5;
             this.label2.Text = "Marlin Part Number:";
             // 
             // partNumberTb
@@ -135,7 +122,7 @@
             this.partNumberTb.Location = new System.Drawing.Point(1156, 25);
             this.partNumberTb.Name = "partNumberTb";
             this.partNumberTb.Size = new System.Drawing.Size(187, 20);
-            this.partNumberTb.TabIndex = 7;
+            this.partNumberTb.TabIndex = 6;
             this.partNumberTb.Tag = "Marlin Part Number";
             // 
             // filepathTb
@@ -144,131 +131,17 @@
             this.filepathTb.Name = "filepathTb";
             this.filepathTb.ReadOnly = true;
             this.filepathTb.Size = new System.Drawing.Size(912, 20);
-            this.filepathTb.TabIndex = 5;
+            this.filepathTb.TabIndex = 7;
             this.filepathTb.Tag = "Filepath for Generation";
-            // 
-            // lengthTb
-            // 
-            this.lengthTb.Location = new System.Drawing.Point(325, 61);
-            this.lengthTb.Name = "lengthTb";
-            this.lengthTb.Size = new System.Drawing.Size(50, 20);
-            this.lengthTb.TabIndex = 0;
-            this.lengthTb.Tag = "Length";
-            this.lengthTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // widthTb
-            // 
-            this.widthTb.Location = new System.Drawing.Point(62, 217);
-            this.widthTb.Name = "widthTb";
-            this.widthTb.Size = new System.Drawing.Size(50, 20);
-            this.widthTb.TabIndex = 1;
-            this.widthTb.Tag = "Width";
-            this.widthTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // heightTb
-            // 
-            this.heightTb.Location = new System.Drawing.Point(62, 500);
-            this.heightTb.Name = "heightTb";
-            this.heightTb.Size = new System.Drawing.Size(50, 20);
-            this.heightTb.TabIndex = 2;
-            this.heightTb.Tag = "Height";
-            this.heightTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.heightTb.TextChanged += new System.EventHandler(this.heightTb_TextChanged);
-            // 
-            // frameDiaTb
-            // 
-            this.frameDiaTb.Location = new System.Drawing.Point(574, 473);
-            this.frameDiaTb.Name = "frameDiaTb";
-            this.frameDiaTb.Size = new System.Drawing.Size(50, 20);
-            this.frameDiaTb.TabIndex = 3;
-            this.frameDiaTb.Tag = "Frame Wire Dia.";
-            this.frameDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // midFrameDiaTb
-            // 
-            this.midFrameDiaTb.Location = new System.Drawing.Point(574, 546);
-            this.midFrameDiaTb.Name = "midFrameDiaTb";
-            this.midFrameDiaTb.Size = new System.Drawing.Size(50, 20);
-            this.midFrameDiaTb.TabIndex = 4;
-            this.midFrameDiaTb.Tag = "Mid Frame Wire Dia.";
-            this.midFrameDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // dimsGb
             // 
-            this.dimsGb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("dimsGb.BackgroundImage")));
             this.dimsGb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.dimsGb.Controls.Add(this.midFrameSpcLb);
-            this.dimsGb.Controls.Add(this.label3);
-            this.dimsGb.Controls.Add(this.midFrameNumTb);
-            this.dimsGb.Controls.Add(this.cwDiaTb);
-            this.dimsGb.Controls.Add(this.widthCWSpcTb);
-            this.dimsGb.Controls.Add(this.lengthCWSpcTb);
-            this.dimsGb.Controls.Add(this.midFrameDiaTb);
-            this.dimsGb.Controls.Add(this.frameDiaTb);
-            this.dimsGb.Controls.Add(this.heightTb);
-            this.dimsGb.Controls.Add(this.widthTb);
-            this.dimsGb.Controls.Add(this.lengthTb);
             this.dimsGb.Location = new System.Drawing.Point(12, 9);
             this.dimsGb.Name = "dimsGb";
             this.dimsGb.Size = new System.Drawing.Size(1135, 704);
-            this.dimsGb.TabIndex = 5;
+            this.dimsGb.TabIndex = 8;
             this.dimsGb.TabStop = false;
-            // 
-            // midFrameSpcLb
-            // 
-            this.midFrameSpcLb.AutoSize = true;
-            this.midFrameSpcLb.Location = new System.Drawing.Point(999, 465);
-            this.midFrameSpcLb.Name = "midFrameSpcLb";
-            this.midFrameSpcLb.Size = new System.Drawing.Size(43, 13);
-            this.midFrameSpcLb.TabIndex = 10;
-            this.midFrameSpcLb.Text = "MidSpc";
-            this.midFrameSpcLb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(965, 557);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "No. of Middle Frame(s):";
-            // 
-            // midFrameNumTb
-            // 
-            this.midFrameNumTb.Location = new System.Drawing.Point(1000, 573);
-            this.midFrameNumTb.Name = "midFrameNumTb";
-            this.midFrameNumTb.Size = new System.Drawing.Size(50, 20);
-            this.midFrameNumTb.TabIndex = 9;
-            this.midFrameNumTb.Tag = "No. MIddle Frame(s)";
-            this.midFrameNumTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.midFrameNumTb.TextChanged += new System.EventHandler(this.midFrameNumTb_TextChanged);
-            // 
-            // cwDiaTb
-            // 
-            this.cwDiaTb.Location = new System.Drawing.Point(539, 624);
-            this.cwDiaTb.Name = "cwDiaTb";
-            this.cwDiaTb.Size = new System.Drawing.Size(50, 20);
-            this.cwDiaTb.TabIndex = 6;
-            this.cwDiaTb.Tag = "CW Dia.";
-            this.cwDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // widthCWSpcTb
-            // 
-            this.widthCWSpcTb.Location = new System.Drawing.Point(727, 626);
-            this.widthCWSpcTb.Name = "widthCWSpcTb";
-            this.widthCWSpcTb.Size = new System.Drawing.Size(50, 20);
-            this.widthCWSpcTb.TabIndex = 7;
-            this.widthCWSpcTb.Tag = "CW Width Spacing";
-            this.widthCWSpcTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lengthCWSpcTb
-            // 
-            this.lengthCWSpcTb.Location = new System.Drawing.Point(257, 624);
-            this.lengthCWSpcTb.Name = "lengthCWSpcTb";
-            this.lengthCWSpcTb.Size = new System.Drawing.Size(50, 20);
-            this.lengthCWSpcTb.TabIndex = 5;
-            this.lengthCWSpcTb.Tag = "CW Length Spacing";
-            this.lengthCWSpcTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // materialGb
             // 
@@ -280,7 +153,7 @@
             this.materialGb.Location = new System.Drawing.Point(1156, 90);
             this.materialGb.Name = "materialGb";
             this.materialGb.Size = new System.Drawing.Size(187, 141);
-            this.materialGb.TabIndex = 10;
+            this.materialGb.TabIndex = 9;
             this.materialGb.TabStop = false;
             this.materialGb.Text = "Material:";
             // 
@@ -354,7 +227,7 @@
             this.finishGb.Location = new System.Drawing.Point(1156, 237);
             this.finishGb.Name = "finishGb";
             this.finishGb.Size = new System.Drawing.Size(187, 120);
-            this.finishGb.TabIndex = 11;
+            this.finishGb.TabIndex = 10;
             this.finishGb.TabStop = false;
             this.finishGb.Text = "Finish:";
             // 
@@ -420,7 +293,7 @@
             this.label4.Location = new System.Drawing.Point(1160, 360);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 13);
-            this.label4.TabIndex = 12;
+            this.label4.TabIndex = 11;
             this.label4.Text = "Approximate Weight:";
             // 
             // weightLb
@@ -429,7 +302,7 @@
             this.weightLb.Location = new System.Drawing.Point(1163, 377);
             this.weightLb.Name = "weightLb";
             this.weightLb.Size = new System.Drawing.Size(0, 13);
-            this.weightLb.TabIndex = 13;
+            this.weightLb.TabIndex = 12;
             // 
             // label5
             // 
@@ -437,7 +310,7 @@
             this.label5.Location = new System.Drawing.Point(1153, 48);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 13);
-            this.label5.TabIndex = 8;
+            this.label5.TabIndex = 13;
             this.label5.Text = "Part Description:";
             // 
             // descriptionTb
@@ -445,10 +318,10 @@
             this.descriptionTb.Location = new System.Drawing.Point(1156, 64);
             this.descriptionTb.Name = "descriptionTb";
             this.descriptionTb.Size = new System.Drawing.Size(181, 20);
-            this.descriptionTb.TabIndex = 10;
+            this.descriptionTb.TabIndex = 14;
             this.descriptionTb.Tag = "Description";
             // 
-            // CWBasketForm
+            // MeshBasketForm
             // 
             this.AcceptButton = this.generateBtn;
             this.AllowDrop = true;
@@ -473,11 +346,9 @@
             this.Controls.Add(this.generateBtn);
             this.Controls.Add(this.browseBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "CWBasketForm";
-            this.Text = "Crosswire Basket Design Template";
-            this.Load += new System.EventHandler(this.CWBasketForm_Load);
-            this.dimsGb.ResumeLayout(false);
-            this.dimsGb.PerformLayout();
+            this.Name = "MeshBasketForm";
+            this.Text = "Mesh Basket Design Template";
+            this.Load += new System.EventHandler(this.MeshBasketForm_Load);
             this.materialGb.ResumeLayout(false);
             this.materialGb.PerformLayout();
             this.finishGb.ResumeLayout(false);
@@ -497,17 +368,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox partNumberTb;
         private System.Windows.Forms.TextBox filepathTb;
-        private System.Windows.Forms.TextBox lengthTb;
-        private System.Windows.Forms.TextBox widthTb;
-        private System.Windows.Forms.TextBox heightTb;
-        private System.Windows.Forms.TextBox frameDiaTb;
-        private System.Windows.Forms.TextBox midFrameDiaTb;
         private System.Windows.Forms.GroupBox dimsGb;
-        private System.Windows.Forms.TextBox widthCWSpcTb;
-        private System.Windows.Forms.TextBox lengthCWSpcTb;
-        private System.Windows.Forms.TextBox cwDiaTb;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox midFrameNumTb;
         private System.Windows.Forms.GroupBox materialGb;
         private System.Windows.Forms.RadioButton gsRb;
         private System.Windows.Forms.RadioButton psRb;
@@ -524,6 +385,5 @@
         private System.Windows.Forms.Label weightLb;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox descriptionTb;
-        private System.Windows.Forms.Label midFrameSpcLb;
     }
 }
