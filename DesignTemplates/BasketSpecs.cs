@@ -80,6 +80,9 @@ namespace InvAddIn
             workPlanesInvisible();
         }
 
+        /// <summary>
+        /// Make the workplanes in the model invisible
+        /// </summary>
         private void workPlanesInvisible()
         {
             AssemblyDocument assemblyDoc = (AssemblyDocument)invApp.ActiveDocument;

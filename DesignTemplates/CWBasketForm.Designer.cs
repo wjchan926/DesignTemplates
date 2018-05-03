@@ -46,7 +46,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.midFrameNumTb = new System.Windows.Forms.TextBox();
             this.cwDiaTb = new System.Windows.Forms.TextBox();
-            this.midFrameSpcTb = new System.Windows.Forms.TextBox();
             this.widthCWSpcTb = new System.Windows.Forms.TextBox();
             this.lengthCWSpcTb = new System.Windows.Forms.TextBox();
             this.materialGb = new System.Windows.Forms.GroupBox();
@@ -65,6 +64,7 @@
             this.weightLb = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.descriptionTb = new System.Windows.Forms.TextBox();
+            this.midFrameSpcLb = new System.Windows.Forms.Label();
             this.dimsGb.SuspendLayout();
             this.materialGb.SuspendLayout();
             this.finishGb.SuspendLayout();
@@ -197,10 +197,10 @@
             // 
             this.dimsGb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("dimsGb.BackgroundImage")));
             this.dimsGb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dimsGb.Controls.Add(this.midFrameSpcLb);
             this.dimsGb.Controls.Add(this.label3);
             this.dimsGb.Controls.Add(this.midFrameNumTb);
             this.dimsGb.Controls.Add(this.cwDiaTb);
-            this.dimsGb.Controls.Add(this.midFrameSpcTb);
             this.dimsGb.Controls.Add(this.widthCWSpcTb);
             this.dimsGb.Controls.Add(this.lengthCWSpcTb);
             this.dimsGb.Controls.Add(this.midFrameDiaTb);
@@ -241,16 +241,6 @@
             this.cwDiaTb.TabIndex = 8;
             this.cwDiaTb.Tag = "CW Dia.";
             this.cwDiaTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // midFrameSpcTb
-            // 
-            this.midFrameSpcTb.Location = new System.Drawing.Point(994, 461);
-            this.midFrameSpcTb.Name = "midFrameSpcTb";
-            this.midFrameSpcTb.ReadOnly = true;
-            this.midFrameSpcTb.Size = new System.Drawing.Size(50, 20);
-            this.midFrameSpcTb.TabIndex = 7;
-            this.midFrameSpcTb.Tag = "Mid Frame Spacing";
-            this.midFrameSpcTb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // widthCWSpcTb
             // 
@@ -446,6 +436,17 @@
             this.descriptionTb.Name = "descriptionTb";
             this.descriptionTb.Size = new System.Drawing.Size(181, 20);
             this.descriptionTb.TabIndex = 14;
+            this.descriptionTb.Tag = "Description";
+            // 
+            // midFrameSpcLb
+            // 
+            this.midFrameSpcLb.AutoSize = true;
+            this.midFrameSpcLb.Location = new System.Drawing.Point(999, 465);
+            this.midFrameSpcLb.Name = "midFrameSpcLb";
+            this.midFrameSpcLb.Size = new System.Drawing.Size(43, 13);
+            this.midFrameSpcLb.TabIndex = 11;
+            this.midFrameSpcLb.Text = "MidSpc";
+            this.midFrameSpcLb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CWBasketForm
             // 
@@ -502,7 +503,6 @@
         private System.Windows.Forms.TextBox frameDiaTb;
         private System.Windows.Forms.TextBox midFrameDiaTb;
         private System.Windows.Forms.GroupBox dimsGb;
-        private System.Windows.Forms.TextBox midFrameSpcTb;
         private System.Windows.Forms.TextBox widthCWSpcTb;
         private System.Windows.Forms.TextBox lengthCWSpcTb;
         private System.Windows.Forms.TextBox cwDiaTb;
@@ -524,5 +524,6 @@
         private System.Windows.Forms.Label weightLb;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox descriptionTb;
+        private System.Windows.Forms.Label midFrameSpcLb;
     }
 }

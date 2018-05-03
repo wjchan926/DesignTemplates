@@ -21,9 +21,8 @@ namespace InvAddIn
         private RadioButton finishRbChecked = null;
         private string cwBasketTemplatePath = @"C:\_Vault\Standards\Inventor\Templates\Crosswire Basket\";
         
-
         /// <summary>
-        /// For testing only.  Class will always need the Invnentor Application object passed to it
+        /// For testing only.  Object will always need the Invnentor Application object passed to it during instantiation
         /// </summary>
         private CWBasketForm()
         {
@@ -39,6 +38,7 @@ namespace InvAddIn
             InitializeComponent();
             this.CenterToParent();
             this.invApp = invApp;
+            resetDefault();   // Set Default Values for text blocks
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace InvAddIn
         private void CWBasketForm_Load(object sender, EventArgs e)
         {            
             this.Text = getVersion(); // Gets assembly version of the addin and Puts in title            
-     //       TopMost = true; // Always put tool on top          
-            resetDefault();   // Set Default Values for text blocks
+            TopMost = true; // Always put tool on top          
+
         }
 
         /// <summary>
@@ -216,6 +216,9 @@ namespace InvAddIn
             resetDefault();
         }
 
+        /// <summary>
+        /// Resets the TextBox values to their defaults
+        /// </summary>
         private void resetDefault()
         {
             lengthTb.Text = "15";
@@ -227,19 +230,42 @@ namespace InvAddIn
             lengthCWSpcTb.Text = "1.5";
             widthCWSpcTb.Text = "1.5";
             midFrameNumTb.Text = "2";
-            midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text)) 
-                / (Double.Parse(midFrameNumTb.Text) + 1));
             ss304Rb.Checked = true;
             naturalRb.Checked = true;
             otherFinishTb.Text = "Generic";
             descriptionTb.Text = "";
+
+            midFrameSpcLb.Text = calcMidFrameSpc();
         }
 
+        /// <summary>
+        /// Calculates the weight of the basket.
+        /// Not complete yet.
+        /// </summary>
         private void calcWeigth()
         {
             double weight = 0.0;
 
             weightLb.Text = String.Format("{0:#,0.000}", weight);
+        }
+
+        /// <summary>
+        /// Calculates the mid frame spacing
+        /// </summary>
+        /// <returns>0 if height or mid frame num is 0, spacing as a string otherwise.</returns>
+        private string calcMidFrameSpc()
+        {         
+            if (string.IsNullOrWhiteSpace(midFrameNumTb.Text) || string.IsNullOrWhiteSpace(heightTb.Text) || 
+                Double.Parse(midFrameNumTb.Text) == 0.0 || Double.Parse(heightTb.Text) == 0.0)
+            {
+                return "0.0";
+            }
+            else
+            {
+                return String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
+                / (Double.Parse(midFrameNumTb.Text) + 1));
+            }  
+    
         }
 
         private void ss304Rb_CheckedChanged(object sender, EventArgs e)
@@ -290,30 +316,13 @@ namespace InvAddIn
 
         private void midFrameNumTb_TextChanged(object sender, EventArgs e)
         {
-            if (Double.Parse(midFrameNumTb.Text) == 0.0)
-            {
-                midFrameSpcTb.Text = "0.0";
-            }
-            else if (!string.IsNullOrWhiteSpace(midFrameNumTb.Text))
-            {
-                midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
-                    / (Double.Parse(midFrameNumTb.Text) + 1));
-            }
+            midFrameSpcLb.Text = calcMidFrameSpc();
         }
 
         private void heightTb_TextChanged(object sender, EventArgs e)
         {
-            //if (Double.Parse(midFrameNumTb.Text) == 0.0)
-            //{
-            //    midFrameSpcTb.Text = "0.0";
-            //}
-            //else if (!string.IsNullOrWhiteSpace(heightTb.Text) && !string.IsNullOrWhiteSpace(midFrameNumTb.Text))
-            //{
-            //    midFrameSpcTb.Text = String.Format("{0:#,0.000}", (Double.Parse(heightTb.Text) - Double.Parse(frameDiaTb.Text))
-            //        / (Double.Parse(midFrameNumTb.Text) + 1));
-            //}
+            midFrameSpcLb.Text = calcMidFrameSpc();
         }
-
         
     }
 }

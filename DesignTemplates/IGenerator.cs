@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace InvAddIn
 {
+    /// <summary>
+    /// Inventor objects that need to be generated must implement this interface.
+    /// This will typcially be used for any auto-generated Marlin design.
+    /// </summary>
     interface IGenerator
     {
         /// <summary>
