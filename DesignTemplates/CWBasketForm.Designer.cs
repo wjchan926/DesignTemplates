@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CWBasketForm));
             this.browseBtn = new System.Windows.Forms.Button();
             this.generateBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
@@ -195,7 +194,7 @@
             // 
             // dimsGb
             // 
-            this.dimsGb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("dimsGb.BackgroundImage")));
+            this.dimsGb.BackgroundImage = global::InvAddIn.Properties.Resources.Crosswire_Basket_Template_V2;
             this.dimsGb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dimsGb.Controls.Add(this.midFrameSpcLb);
             this.dimsGb.Controls.Add(this.label3);

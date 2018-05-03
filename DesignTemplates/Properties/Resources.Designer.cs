@@ -59,5 +59,25 @@ namespace InvAddIn.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Crosswire_Basket_Template_V2 {
+            get {
+                object obj = ResourceManager.GetObject("Crosswire Basket Template V2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon cwBasketV2 {
+            get {
+                object obj = ResourceManager.GetObject("cwBasketV2", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
